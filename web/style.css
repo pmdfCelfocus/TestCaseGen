@@ -1,0 +1,34 @@
+.pdf {
+    border: 5px solid grey;
+    width:  500px;
+    height: 500px;
+  }
+
+.pdf .requirements{
+    border: 1px solid blue;
+    width:  90%;
+    height: 30%;
+    margin-top: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
+.pdf .requirements .reqMessage{
+    padding: 70px 0;
+    text-align: center;
+}
+
+.pdf .descriptions{
+    border: 1px solid blue;
+    width:  90%;
+    height: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pdf .requirements .descMessage{
+    padding: 70px 0;
+    text-align: center;
+}
+
