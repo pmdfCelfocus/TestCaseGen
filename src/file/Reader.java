@@ -20,8 +20,8 @@ public class Reader {
     });
 
     public static void parsePDF() throws IOException {
-        PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
-        // PdfReader reader = new PdfReader("gephi_srs_document.pdf");
+        //PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
+        PdfReader reader = new PdfReader("gephi_srs_document.pdf");
         int requirementPage = getRequirementsPageNumber(reader);
         int counter = 0;
         System.out.println(reader.getNumberOfPages());
@@ -81,9 +81,9 @@ public class Reader {
         }
         String key = text[counter];
         List<String> values = new LinkedList<>();
-        for (int i = counter + 1; i < text.length; i++) {
-            String str = text[i];
-            if ((empty(text[i]) || stringContainsNumber(text[i + 1]) || text[i + 1].contains("ID:"))) {
+        for (int i = counter; i < text.length; i++) {
+            if ((i+1) < text.length && ((empty(text[i + 1]) || stringContainsNumber(text[i + 1]) || text[i + 1].contains("ID:")))) {
+                values.add(text[i]);
                 requirements.put(key, values);
                 counter += i;
                 break;
