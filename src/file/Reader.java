@@ -6,18 +6,15 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Reader {
 
-    private static Map<String, List<String>> requirements = new HashMap<>();
+    private static Map<String, List<String>> requirements = new TreeMap<>();
 
-    public static void parsePDF() throws IOException {
+    public static void parsePDF(boolean IEEE) throws IOException {
         PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
         //PdfReader reader = new PdfReader("gephi_srs_document.pdf");
         int requirementPage = getRequirementsPageNumber(reader);
@@ -26,7 +23,10 @@ public class Reader {
         for (int i = requirementPage; i < reader.getNumberOfPages(); i++) {
             String[] text = PdfTextExtractor.getTextFromPage(reader, i).split("\n");
             do {
-                pair = processRequirement(text, pair);
+                if (!IEEE)
+                    pair = processNonIEEERequirement(text, pair);
+                else
+                    pair = processIEEERequirement(text, pair);
             } while (pair.getKey().getKey() < text.length);
             pair = new Pair<>(new Pair<>(0, pair.getKey().getValue()), pair.getValue());
         }
@@ -70,7 +70,8 @@ public class Reader {
         return m.find();
     }
 
-    public static Pair<Pair<Integer, Boolean>, List<String>> processRequirement(String[] text, Pair<Pair<Integer, Boolean>, List<String>> pair) {
+    public static Pair<Pair<Integer, Boolean>, List<String>> processIEEERequirement(String[] text, Pair<Pair<Integer, Boolean>, List<String>> pair) {
+
         String key;
         List<String> values;
 
@@ -84,8 +85,54 @@ public class Reader {
                 key = text[counter];
                 keys.add(key);
                 values = new LinkedList<>();
-            }else{
-                return new Pair<>(new Pair(counter+1,finished), keys);
+            } else {
+                return new Pair<>(new Pair(counter + 1, finished), keys);
+            }
+
+        } else {
+            if(counter == 0)
+                counter = - 1;
+            key = keys.get(keys.size() - 1);
+            values = requirements.get(key);
+        }
+
+        for (int i = counter + 1; i < text.length; i++) {
+            counter++;
+            String str = text[i];
+
+            if (empty(str))
+                continue;
+            if( stringContainsNumber(str) && counter + 2 == text.length)
+                break;
+            if ((stringContainsNumber(str) && !str.toLowerCase().contains("figure"))) {
+                finished = true;
+                break;
+            }
+            values.add(str);
+        }
+        if (counter + 1 == text.length)
+            counter++;
+        if (!values.isEmpty())
+            requirements.put(key, values);
+        return new Pair<>(new Pair<>(counter, finished), keys);
+    }
+
+    public static Pair<Pair<Integer, Boolean>, List<String>> processNonIEEERequirement(String[] text, Pair<Pair<Integer, Boolean>, List<String>> pair) {
+        String key;
+        List<String> values;
+
+        int counter = pair.getKey().getKey();
+        boolean finished = pair.getKey().getValue();
+        List<String> keys = pair.getValue();
+
+        if (finished) {
+            finished = false;
+            if (!text[counter].isEmpty()) {
+                key = text[counter];
+                keys.add(key);
+                values = new LinkedList<>();
+            } else {
+                return new Pair<>(new Pair(counter + 1, finished), keys);
             }
 
         } else {
@@ -103,22 +150,11 @@ public class Reader {
                 break;
             }
             values.add(str);
-
-            /**
-             if ((i+1) < text.length && ((empty(text[i + 1]) || stringContainsNumber(text[i + 1]) || text[i + 1].contains("ID:")))) {
-             if((i+2) < text.length && !empty(text[i + 2])){
-             }else{
-             requirements.put(key, values);
-             counter += i;
-             break;
-             }
-             }
-             values.add(text[i]);
-             **/
         }
-        if(counter + 1 == text.length)
+        if (counter + 1 == text.length)
             counter++;
-        requirements.put(key, values);
+        if (!values.isEmpty())
+            requirements.put(key, values);
         return new Pair<>(new Pair<>(counter, finished), keys);
     }
 
