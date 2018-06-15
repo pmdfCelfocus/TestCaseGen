@@ -15,12 +15,11 @@ public class Reader {
     private static Map<String, List<String>> requirements = new TreeMap<>();
 
     public static void parsePDF(boolean IEEE) throws IOException {
-        PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
-        //PdfReader reader = new PdfReader("gephi_srs_document.pdf");
-        int requirementPage = getRequirementsPageNumber(reader);
-        System.out.println(requirementPage);
+        //PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
+        PdfReader reader = new PdfReader("gephi_srs_document.pdf");
+        Pair<Integer,Integer> requirementPage = getRequirementsPageNumber(reader);
         Pair<Pair<Integer, Boolean>, List<String>> pair = new Pair<>(new Pair<>(0, true), new LinkedList<>());
-        for (int i = requirementPage; i < reader.getNumberOfPages(); i++) {
+        for (int i = requirementPage.getKey(); i < requirementPage.getValue(); i++) {
             String[] text = PdfTextExtractor.getTextFromPage(reader, i).split("\n");
             do {
                 if (!IEEE)
@@ -64,7 +63,22 @@ public class Reader {
     }
 
     private static boolean stringContainsNumber(String s) {
-        Pattern p = Pattern.compile("^\\d((\\.\\d)+)?");
+        Pattern p = Pattern.compile("^\\d((\\.\\d)+)");
+        //Pattern p = Pattern.compile("^\\d((\\.\\d)+)?");
+        Matcher m = p.matcher(s);
+
+        return m.find();
+    }
+
+    private static boolean endPage(String s){
+        Pattern p = Pattern.compile("^(\\d|\\d\\d)\\s");
+        Matcher m = p.matcher(s);
+
+        return m.find();
+    }
+
+    private static boolean startsWith(String s, String prefix){
+        Pattern p = Pattern.compile("^" + prefix);
         Matcher m = p.matcher(s);
 
         return m.find();
@@ -102,7 +116,7 @@ public class Reader {
 
             if (empty(str))
                 continue;
-            if( stringContainsNumber(str) && counter + 2 == text.length)
+            if( endPage(str) && counter + 2 == text.length)
                 break;
             if ((stringContainsNumber(str) && !str.toLowerCase().contains("figure"))) {
                 finished = true;
@@ -158,9 +172,12 @@ public class Reader {
         return new Pair<>(new Pair<>(counter, finished), keys);
     }
 
-    public static int getRequirementsPageNumber(PdfReader reader) throws IOException {
+    public static Pair<Integer, Integer> getRequirementsPageNumber(PdfReader reader) throws IOException {
         int introductionPage = 0;
         int requirementsPage = 0;
+        int nextChapter = -1;
+        int nextChapterPage = 0;
+        String str = null;
         for (int i = 1; i < reader.getNumberOfPages(); i++) {
             String text = PdfTextExtractor.getTextFromPage(reader, i, new LocationTextExtractionStrategy());
             if (text.contains("Table of Contents")) {
@@ -169,7 +186,16 @@ public class Reader {
                     if (empty(index))
                         continue;
                     if (index.toLowerCase().contains("requirements") && index.charAt(2) == ' ') {
+                        str = "";
+                        str += index.charAt(0);
+                        nextChapter = Integer.parseInt(str);
+                        nextChapter++;
+                        str = "";
+                        str += nextChapter;
                         requirementsPage = getPageNumber(index);
+                    }
+                    if(str != null && startsWith(index,str)){
+                        nextChapterPage = getPageNumber(index);
                         break;
                     }
                 }
@@ -179,7 +205,7 @@ public class Reader {
             if (requirementsPage != 0 && introductionPage != 0)
                 break;
         }
-        return requirementsPage + introductionPage;
+        return new Pair<>(requirementsPage + introductionPage, nextChapterPage + introductionPage );
     }
 
 }
