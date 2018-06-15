@@ -10,21 +10,21 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Reader {
+public class PDFReader {
 
     private static Map<String, List<String>> requirements = new TreeMap<>();
 
-    public static void parsePDF(boolean IEEE) throws IOException {
+    public static Map<String, List<String>> parsePDF(boolean IEEE, byte[] data) throws IOException {
         //PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
-        PdfReader reader = new PdfReader("gephi_srs_document.pdf");
+        PdfReader reader = new PdfReader(data);
         Pair<Integer,Integer> requirementPage = getRequirementsPageNumber(reader);
         Pair<Pair<Integer, Boolean>, List<String>> pair = new Pair<>(new Pair<>(0, true), new LinkedList<>());
         for (int i = requirementPage.getKey(); i < requirementPage.getValue(); i++) {
             String[] text = PdfTextExtractor.getTextFromPage(reader, i).split("\n");
             do {
-                if (!IEEE)
-                    pair = processNonIEEERequirement(text, pair);
-                else
+               // if (!IEEE)
+                    //pair = processNonIEEERequirement(text, pair);
+               // else
                     pair = processIEEERequirement(text, pair);
             } while (pair.getKey().getKey() < text.length);
             pair = new Pair<>(new Pair<>(0, pair.getKey().getValue()), pair.getValue());
@@ -37,6 +37,7 @@ public class Reader {
             });
             System.out.println();
         }
+        return requirements;
     }
 
     private static int getPageNumber(String index) {
@@ -84,7 +85,7 @@ public class Reader {
         return m.find();
     }
 
-    public static Pair<Pair<Integer, Boolean>, List<String>> processIEEERequirement(String[] text, Pair<Pair<Integer, Boolean>, List<String>> pair) {
+    private static Pair<Pair<Integer, Boolean>, List<String>> processIEEERequirement(String[] text, Pair<Pair<Integer, Boolean>, List<String>> pair) {
 
         String key;
         List<String> values;
@@ -131,6 +132,9 @@ public class Reader {
         return new Pair<>(new Pair<>(counter, finished), keys);
     }
 
+    /**
+     *
+     *
     public static Pair<Pair<Integer, Boolean>, List<String>> processNonIEEERequirement(String[] text, Pair<Pair<Integer, Boolean>, List<String>> pair) {
         String key;
         List<String> values;
@@ -171,8 +175,9 @@ public class Reader {
             requirements.put(key, values);
         return new Pair<>(new Pair<>(counter, finished), keys);
     }
+     **/
 
-    public static Pair<Integer, Integer> getRequirementsPageNumber(PdfReader reader) throws IOException {
+    private static Pair<Integer, Integer> getRequirementsPageNumber(PdfReader reader) throws IOException {
         int introductionPage = 0;
         int requirementsPage = 0;
         int nextChapter = -1;
