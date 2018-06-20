@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-        <script TYPE="text/javascript" SRC="bundle.js"></script>
-		<link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>	
 
-    <div class="pdf">
-        <div class="requirements" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-            <p class="reqMessage">Drag your requirements document to this Drop Zone ...</p>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="dist/dropzone.css">
+    <script src="dist/dropzone.js" type="text/javascript"></script>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <base href="/">
+</head>
+
+<body>
+
+    <form action="/file-upload" class="dropzone">
+        <div class="fallback">
+            <input type="file" name="file" />
         </div>
-        <div class="descriptions" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-            <p class="descMessage">Drag your test names and descriptions to this Drop Zone ...</p>
-        </div>
-    </div>
+    </form>
 
 </body>
+
 </html>

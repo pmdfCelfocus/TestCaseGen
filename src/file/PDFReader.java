@@ -14,17 +14,14 @@ public class PDFReader {
 
     private static Map<String, List<String>> requirements = new TreeMap<>();
 
-    public static Map<String, List<String>> parsePDF(boolean IEEE, byte[] data) throws IOException {
-        //PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
-        PdfReader reader = new PdfReader(data);
+    public static Map<String, List<String>> parsePDF(byte[] data) throws IOException {
+        //PdfReader reader = new PdfReader(data);
+        PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
         Pair<Integer,Integer> requirementPage = getRequirementsPageNumber(reader);
         Pair<Pair<Integer, Boolean>, List<String>> pair = new Pair<>(new Pair<>(0, true), new LinkedList<>());
         for (int i = requirementPage.getKey(); i < requirementPage.getValue(); i++) {
             String[] text = PdfTextExtractor.getTextFromPage(reader, i).split("\n");
             do {
-               // if (!IEEE)
-                    //pair = processNonIEEERequirement(text, pair);
-               // else
                     pair = processIEEERequirement(text, pair);
             } while (pair.getKey().getKey() < text.length);
             pair = new Pair<>(new Pair<>(0, pair.getKey().getValue()), pair.getValue());
@@ -59,13 +56,11 @@ public class PDFReader {
     }
 
     private static boolean empty(final String s) {
-        // Null-safe, short-circuit evaluation.
         return s == null || s.trim().isEmpty();
     }
 
     private static boolean stringContainsNumber(String s) {
         Pattern p = Pattern.compile("^\\d((\\.\\d)+)");
-        //Pattern p = Pattern.compile("^\\d((\\.\\d)+)?");
         Matcher m = p.matcher(s);
 
         return m.find();
@@ -131,51 +126,6 @@ public class PDFReader {
             requirements.put(key, values);
         return new Pair<>(new Pair<>(counter, finished), keys);
     }
-
-    /**
-     *
-     *
-    public static Pair<Pair<Integer, Boolean>, List<String>> processNonIEEERequirement(String[] text, Pair<Pair<Integer, Boolean>, List<String>> pair) {
-        String key;
-        List<String> values;
-
-        int counter = pair.getKey().getKey();
-        boolean finished = pair.getKey().getValue();
-        List<String> keys = pair.getValue();
-
-        if (finished) {
-            finished = false;
-            if (!text[counter].isEmpty()) {
-                key = text[counter];
-                keys.add(key);
-                values = new LinkedList<>();
-            } else {
-                return new Pair<>(new Pair(counter + 1, finished), keys);
-            }
-
-        } else {
-            key = keys.get(keys.size() - 1);
-            values = requirements.get(key);
-        }
-        for (int i = counter + 1; i < text.length; i++) {
-            counter++;
-            String str = text[i];
-
-            if (empty(str) || str.toLowerCase().contains("page"))
-                continue;
-            if (str.contains("ID:") || stringContainsNumber(str)) {
-                finished = true;
-                break;
-            }
-            values.add(str);
-        }
-        if (counter + 1 == text.length)
-            counter++;
-        if (!values.isEmpty())
-            requirements.put(key, values);
-        return new Pair<>(new Pair<>(counter, finished), keys);
-    }
-     **/
 
     private static Pair<Integer, Integer> getRequirementsPageNumber(PdfReader reader) throws IOException {
         int introductionPage = 0;

@@ -1,6 +1,6 @@
+import file.ExcelReader;
 import file.PDFReader;
 import monkeyLearn.ClassificationRequest;
-import objects.Requirement;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -22,9 +22,9 @@ public class RestServer {
     @Path("pdf/")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, List<Requirement>> analyzePDF(byte[] data) throws Exception{
+    public Map<String, List<String>> analyzePDF(byte[] data) throws Exception{
         try {
-            Map<String, List<String>> requirements = PDFReader.parsePDF(true,data);
+            Map<String, List<String>> requirements = PDFReader.parsePDF(data);
             List<String> textList = new LinkedList<>();
             for(String key : requirements.keySet()) {
                 StringBuilder str = new StringBuilder();
@@ -34,7 +34,7 @@ public class RestServer {
                 textList.add(str.toString());
             }
             String[] array = new String[textList.size()];
-                ClassificationRequest.response(textList.toArray(array));
+               return  ClassificationRequest.response(textList.toArray(array));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,12 @@ public class RestServer {
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, String> analyzeExcel(byte[] data){
-        return null;
+        try{
+            return ExcelReader.parseExcel(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void main(String[] args){

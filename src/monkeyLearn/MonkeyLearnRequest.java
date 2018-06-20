@@ -14,7 +14,7 @@ import org.apache.http.util.EntityUtils;
 
 public class MonkeyLearnRequest {
 
-    private static final String CLASSIFIER_URL = "https://api.monkeylearn.com/v3/classifiers/cl_TKb7XmdG/classify/";
+    private static final String CLASSIFIER_URL = "https://api.monkeylearn.com/v3/classifiers/cl_4yVFrrYo/classify/";
 
     public static String createRequest(String[] textList) throws Exception {
         HttpClient httpClient = new DefaultHttpClient();
@@ -22,8 +22,6 @@ public class MonkeyLearnRequest {
         httpPost.setHeader("Content-type", "application/json");
         httpPost.setHeader("Authorization", "Token f3ba5a73136f53e5e128ab60d765dc211d3d8726");
         try {
-            Gson gson = new Gson();
-            //gson.toJson(textList)
             String text = singleKeyValueToJson(textList);
             System.out.println(text);
             StringEntity stringEntity = new StringEntity(text, "UTF8");
