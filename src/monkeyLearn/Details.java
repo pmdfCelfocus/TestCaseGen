@@ -5,10 +5,10 @@ public class Details {
     private String text;
     private String external_id;
     private boolean error;
-    private Classifications classifications;
+    private Classifications[] classifications;
     private String error_detail;
 
-    public Details(String text, String external_id, boolean error, String error_detail, Classifications classifications){
+    public Details(String text, String external_id, boolean error, String error_detail, Classifications[] classifications){
         this.text = text;
         this.external_id = external_id;
         this.error = error;
@@ -28,7 +28,7 @@ public class Details {
         return error;
     }
 
-    public Classifications getClassifications() {
+    public Classifications[] getClassifications() {
         return classifications;
     }
 

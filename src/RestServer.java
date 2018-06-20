@@ -1,4 +1,3 @@
-import com.monkeylearn.MonkeyLearnException;
 import file.PDFReader;
 import monkeyLearn.ClassificationRequest;
 import objects.Requirement;
@@ -35,11 +34,7 @@ public class RestServer {
                 textList.add(str.toString());
             }
             String[] array = new String[textList.size()];
-            try {
                 ClassificationRequest.response(textList.toArray(array));
-            } catch (MonkeyLearnException e) {
-                e.printStackTrace();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
