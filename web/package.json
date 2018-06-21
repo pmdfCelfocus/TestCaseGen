@@ -4,10 +4,15 @@
   "description": "Package to use npm in the browser",
   "main": "dragNdrop.js",
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "connect-busboy": "0.0.2",
+    "events": "^3.0.0",
     "express": "^4.16.3",
     "express-fileupload": "^0.4.0",
-    "path": "^0.12.7"
+    "file-api": "^0.10.4",
+    "file-system": "^2.2.2",
+    "filereader": "^0.10.3",
+    "path": "^0.12.7",
+    "request": "^2.87.0"
   },
   "devDependencies": {},
   "scripts": {

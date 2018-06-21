@@ -1,5 +1,6 @@
 package file;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -13,8 +14,10 @@ public class ExcelReader {
 
     public static  Map<String , String> parseExcel(byte[] data) throws Exception {
         try {
-            FileInputStream file = new FileInputStream(ByteArrayToFile.insertDataToExcel("excel.xlsx", data));
-            //FileInputStream file = new FileInputStream(new File("tests.xlsx"));
+           // FileInputStream file = new FileInputStream(ByteArrayToFile.insertDataToExcel("excel.xlsx", data));
+            FileUtils.writeByteArrayToFile(new File("excel"), data);
+            Thread.sleep(5000);
+            FileInputStream file = new FileInputStream(new File("excel.xlsx"));
             Map<String , String> tests = new TreeMap<>();
             Cell[] pair = new Cell[2];
             int counter = 0;
@@ -33,7 +36,7 @@ public class ExcelReader {
                 tests.put(pair[0].getStringCellValue(), pair[1].getStringCellValue());
                 counter = 0;
             }
-            file.close();
+           // file.close();
             return tests;
         }catch (Exception e){
             e.printStackTrace();
