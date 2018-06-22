@@ -17,11 +17,6 @@ public class PDFReader {
     private static Map<String, List<String>> requirements = new TreeMap<>();
 
     public static Map<String, List<String>> parsePDF(byte[] data) throws IOException {
-
-        try (OutputStream out = new FileOutputStream("out.pdf")) {
-            out.write(data);
-        }
-
         PdfReader reader = new PdfReader(data);
         Pair<Integer,Integer> requirementPage = getRequirementsPageNumber(reader);
         Pair<Pair<Integer, Boolean>, List<String>> pair = new Pair<>(new Pair<>(0, true), new LinkedList<>());

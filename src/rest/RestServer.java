@@ -23,6 +23,7 @@ public class RestServer implements Rest {
 
     public String analyzePDF(String data) throws Exception{
         try {
+            System.out.println(data);
             Obj b = gson.fromJson(data, Obj.class);
             Map<String, List<String>> requirements = PDFReader.parsePDF(b.getBuffer().getData());
             List<String> textList = new LinkedList<>();

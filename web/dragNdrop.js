@@ -35,8 +35,8 @@ app.post('/file-upload', function (req, res) {
         fstream.on('close', function () {
             res.redirect('back');
         });
-       // requestFunc(filename, dir);
-        dbx.createFolder('/Share');
+        requestFunc(filename,file);
+        //dbx.addFile("/Share", filename, file);
        // test(dir);
     });
 
@@ -44,13 +44,13 @@ app.post('/file-upload', function (req, res) {
 
 //-------------------------------------------------------
 
-/**function postFunc(filename, extension, data) {
+function postFunc(extension, file) {
 
    var options = {
     method: 'POST',
     uri:  POST_URL + extension + "/",
     body: {
-        buffer: new Buffer(data, 'binary')
+        raw: file
     },
     json: true // Automatically stringifies the body to JSON
 };
@@ -64,7 +64,6 @@ rp(options)
     });
 
 }
-**/
 
 function findExtension(filename) {
     let charArray = Array.from(filename);
@@ -79,9 +78,10 @@ function findExtension(filename) {
     }
 }
 
-function requestFunc(filename, myFile) {
+function requestFunc(filename, file) {
     var fileByteArray = [];
-    //reader.readAsArrayBuffer(__dirname + "/files/" + myFile);
+    /**reader.readAsArrayBuffer(__dirname + "/files/" + myFile);
+    
     reader.readAsArrayBuffer(new File(myFile));
     reader.onload = function (evt) {
         if (evt.target.readyState == FileReader.DONE) {
@@ -90,8 +90,9 @@ function requestFunc(filename, myFile) {
             for (var i = 0; i < array.length; i++) {
                 fileByteArray.push(array[i]);
             }
-            let extension = findExtension(filename);
-            //postFunc(filename, extension, fileByteArray);
         }
     }
+    **/
+    let extension = findExtension(filename);
+    postFunc(extension, file);
 }

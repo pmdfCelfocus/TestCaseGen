@@ -25,8 +25,17 @@ module.exports.createFolder = function(name){
     });
 }
 
-module.exports.addFile = function(name, dir, ){
+module.exports.addFile = function(name, filename, file){
     dbx.filesUpload({
-
+        path: name + "/" + filename,
+        mode: "add",
+        autorename: true,
+        mute : false,
+        contents: file
+    }).then(function(response){
+        console.log(response);
+    })
+    .catch(function(error){
+        console.error(error);
     });
 }
