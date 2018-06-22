@@ -5,14 +5,18 @@
   "main": "dragNdrop.js",
   "dependencies": {
     "connect-busboy": "0.0.2",
+    "dropbox": "^4.0.7",
     "events": "^3.0.0",
     "express": "^4.16.3",
     "express-fileupload": "^0.4.0",
     "file-api": "^0.10.4",
     "file-system": "^2.2.2",
     "filereader": "^0.10.3",
+    "isomorphic-fetch": "^2.2.1",
     "path": "^0.12.7",
-    "request": "^2.87.0"
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "xlsx": "^0.13.0"
   },
   "devDependencies": {},
   "scripts": {

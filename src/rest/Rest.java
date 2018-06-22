@@ -12,13 +12,11 @@ public interface Rest {
     @Path("pdf/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    // Map<String, List<String>>
-    String analyzePDF(byte[] data) throws Exception;
+    String analyzePDF(String data) throws Exception;
 
     @POST
     @Path("xlsx/")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    //Map<String, String>
-    String analyzeExcel(byte[] data);
+    String analyzeExcel(String data);
 }

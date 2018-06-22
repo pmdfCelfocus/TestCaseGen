@@ -6,10 +6,13 @@ import file.PDFReader;
 import monkeyLearn.ClassificationRequest;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import utils.Buffer;
 import utils.IP;
+import utils.Obj;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +21,10 @@ public class RestServer implements Rest {
 
     private Gson gson = new Gson();
 
-    public String analyzePDF(byte[] data) throws Exception{
+    public String analyzePDF(String data) throws Exception{
         try {
-            Map<String, List<String>> requirements = PDFReader.parsePDF(data);
+            Obj b = gson.fromJson(data, Obj.class);
+            Map<String, List<String>> requirements = PDFReader.parsePDF(b.getBuffer().getData());
             List<String> textList = new LinkedList<>();
             for(String key : requirements.keySet()) {
                 StringBuilder str = new StringBuilder();
@@ -30,16 +34,20 @@ public class RestServer implements Rest {
                 textList.add(str.toString());
             }
             String[] array = new String[textList.size()];
-               return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
+              // return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
+            return gson.toJson(textList.toArray(array));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String analyzeExcel(byte[] data){
+    public String analyzeExcel(String data){
         try{
-            String str = gson.toJson(ExcelReader.parseExcel(data));
+            //TODO
+            String str = data;
+            System.out.println(str);
+            //String str = gson.toJson(ExcelReader.parseExcel(data));
             System.out.println(str);
             return str;
         } catch (Exception e) {
