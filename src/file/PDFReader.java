@@ -134,6 +134,7 @@ public class PDFReader {
         int nextChapter = -1;
         int nextChapterPage = 0;
         String str = null;
+        System.out.println(reader.getNumberOfPages());
         for (int i = 1; i < reader.getNumberOfPages(); i++) {
             String text = PdfTextExtractor.getTextFromPage(reader, i, new LocationTextExtractionStrategy());
             if (text.contains("Table of Contents")) {

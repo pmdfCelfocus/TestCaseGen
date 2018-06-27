@@ -8,6 +8,7 @@ const FileAPI = require('file-api');
 const request = require('request');
 const rp = require('request-promise');
 const dbx = require('./dropBox');
+
 const app = express();
 const FileReader = FileAPI.FileReader;
 const File = FileAPI.File;
@@ -31,16 +32,23 @@ app.post('/file-upload', function (req, res) {
         let dir = __dirname + '/files/' + filename;
         fstream = fs.createWriteStream(dir);
         file.pipe(fstream);
-
         fstream.on('close', function () {
-            res.redirect('back');
+            res.redirect('back');    
         });
-        requestFunc(filename,file);
+        function encode_utf8(s) {
+  return unescape(encodeURIComponent(s));
+}
+        dbx.addFile("/Share",filename,encode_utf8(file));
+        //requestFunc(filename,file);
         //dbx.addFile("/Share", filename, file);
        // test(dir);
     });
 
 });
+
+function encode_utf8(s) {
+    return unescape(encodeURIComponent(s));
+  }
 
 //-------------------------------------------------------
 
@@ -49,10 +57,10 @@ function postFunc(extension, file) {
    var options = {
     method: 'POST',
     uri:  POST_URL + extension + "/",
+    "content-type":"application/pdf; charset=ANSI",
     body: {
-        raw: file
-    },
-    json: true // Automatically stringifies the body to JSON
+        raw: file,
+    }
 };
  
 rp(options)
