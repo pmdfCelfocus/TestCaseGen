@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.sun.jersey.contribs:jersey-multipart:1.18" type="repository">
+    <properties maven-id="com.sun.jersey.contribs:jersey-multipart:1.18" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/jersey/contribs/jersey-multipart/1.18/jersey-multipart-1.18.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/mimepull/1.9.3/mimepull-1.9.3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/sun/jersey/jersey-core/1.18/jersey-core-1.18.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

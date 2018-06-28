@@ -1,22 +1,27 @@
 package rest;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import com.sun.jersey.multipart.FormDataBodyPart;
+import com.sun.jersey.multipart.FormDataParam;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Path("/")
 public interface Rest {
     @POST
-    @Path("pdf/")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    String analyzePDF(String data) throws Exception;
-
-    @POST
-    @Path("xlsx/")
+    @Path("pdf/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    String analyzeExcel(String data);
+    String analyzePDF(@FormDataParam("file") InputStream uploadedInputStream);
+
+    @POST
+    @Path("xlsx/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    String analyzeExcel(@FormDataParam("file") InputStream uploadedInputStream);
 }

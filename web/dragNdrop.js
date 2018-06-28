@@ -1,4 +1,4 @@
-const POST_URL = "http://172.18.191.105:9999/";
+const POST_URL = "http://localhost:9999/";
 
 const express = require("express");
 const path = require("path");
@@ -33,45 +33,46 @@ app.post('/file-upload', function (req, res) {
         fstream = fs.createWriteStream(dir);
         file.pipe(fstream);
         fstream.on('close', function () {
-            res.redirect('back');    
+            res.redirect('back');
+            requestFunc(filename, dir);
+
+
         });
-        function encode_utf8(s) {
-  return unescape(encodeURIComponent(s));
-}
-        dbx.addFile("/Share",filename,encode_utf8(file));
-        //requestFunc(filename,file);
+
+    }
+        //dbx.addFile("/Share",filename,encode_utf8(file));
+
         //dbx.addFile("/Share", filename, file);
-       // test(dir);
-    });
+        // test(dir);
+    );
 
 });
 
-function encode_utf8(s) {
-    return unescape(encodeURIComponent(s));
-  }
-
 //-------------------------------------------------------
 
-function postFunc(extension, file) {
+function postFunc(extension, dir, filename) {
 
-   var options = {
-    method: 'POST',
-    uri:  POST_URL + extension + "/",
-    "content-type":"application/pdf; charset=ANSI",
-    body: {
-        raw: file,
+    var options = {
+        method: 'POST',
+        uri: POST_URL + extension + "/upload",
+        headers: {
+            "content-type": "multipart/form-data",
+        },
+        formData: {
+            data: fs.createReadStream(dir)
+        }
     }
-};
- 
+
+
 rp(options)
-    .then(function (parsedBody) {
-        console.log('Upload successful!  Server responded with:', parsedBody);
+    .then(function (response) {
+        console.log('Upload successful!  Server responded with:', response);
     })
     .catch(function (err) {
         return console.error('upload failed:', err);
     });
 
-}
+};
 
 function findExtension(filename) {
     let charArray = Array.from(filename);
@@ -86,7 +87,7 @@ function findExtension(filename) {
     }
 }
 
-function requestFunc(filename, file) {
+function requestFunc(filename, dir) {
     var fileByteArray = [];
     /**reader.readAsArrayBuffer(__dirname + "/files/" + myFile);
     
@@ -102,5 +103,5 @@ function requestFunc(filename, file) {
     }
     **/
     let extension = findExtension(filename);
-    postFunc(extension, file);
+    postFunc(extension,dir , filename);
 }
