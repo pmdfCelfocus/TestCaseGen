@@ -13,6 +13,8 @@ app.use(busboy());
 const http = require("http").Server(app).listen(80);
 console.log("Server started!");
 
+let collections = [];
+
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/TestCaseGen.html");
 });
@@ -46,7 +48,8 @@ function postFunc(dir, filename) {
         if (err) {
             return console.error('upload failed:', err);
         }
-        console.log('Upload successful!  Server responded with:', body);
+        console.log('Upload successful!');
+        collections[extension] = JSON.parse(body);
     });
 
 }

@@ -15,13 +15,14 @@ import java.util.Map;
 
 public class RestServer implements Rest {
 
+    private static final String BASE_PATH = "D:\\Estagio\\";
+
     Gson gson = new Gson();
 
     public String analyzePDF(InputStream uploadedInputStream) {
 
         try {
-            writeToFile(uploadedInputStream, "D:\\Estagio\\test.pdf");
-            Map<String, List<String>> requirements = PDFReader.parsePDF("D:\\Estagio\\test.pdf");
+            Map<String, List<String>> requirements = PDFReader.parsePDF(writeToFile(uploadedInputStream));
             List<String> textList = new LinkedList<>();
             for (String key : requirements.keySet()) {
                 StringBuilder str = new StringBuilder();
@@ -42,40 +43,58 @@ public class RestServer implements Rest {
 
     public String analyzeExcel(InputStream uploadedInputStream) {
         try {
-            System.out.println("EITA");
-            writeToFile(uploadedInputStream, "D:\\Estagio\\test.xlsx");
-            return gson.toJson(ExcelReader.parseExcel("D:\\Estagio\\test.xlsx"));
+            return gson.toJson(ExcelReader.parseExcel(writeToFile(uploadedInputStream)));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private void writeToFile(InputStream uploadedInputStream,
-                             String uploadedFileLocation) {
+    private String findName(InputStream uploadedInputStream) {
+        checkAndCreateDirectory();
+        try {
+            byte[] bytes = new byte[205];
+            uploadedInputStream.read(bytes);
+            String text = new String(bytes, "Cp1252");
+            String[] split = text.split("\n");
+            for (String s : split) {
+                if (s.contains("filename")) {
+                    String[] extraction = s.split("filename=");
+                    return BASE_PATH + extraction[1].substring(1, extraction[1].length() - 2);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String writeToFile(InputStream uploadedInputStream) {
         int read = 0;
         try {
             byte[] bytes = new byte[205];
-            boolean first = true;
-            OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+            String result = findName(uploadedInputStream);
+            OutputStream out = new FileOutputStream(new File(result));
             while (((read = uploadedInputStream.read(bytes)) != -1)) {
-                if (first){
-                    first = false;
-                    continue;
-                }
-                    out.write(bytes, 0, read);
+                out.write(bytes, 0, read);
             }
             out.flush();
             out.close();
+            return result;
         } catch (IOException e) {
-
             e.printStackTrace();
         }
+        return null;
+    }
 
+    private static void checkAndCreateDirectory() {
+        File directory = new File(BASE_PATH);
+        if (!directory.exists())
+            directory.mkdirs();
     }
 
     public static void main(String[] args) {
-        String URI_BASE = "http://"+ IP.hostAddress() +":9999/";
+        String URI_BASE = "http://" + IP.hostAddress() + ":9999/";
         System.out.println(URI_BASE);
         ResourceConfig config = new ResourceConfig();
         config.register(new RestServer());
