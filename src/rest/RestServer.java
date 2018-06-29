@@ -5,6 +5,7 @@ import file.ExcelReader;
 import file.PDFReader;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import utils.IP;
 
 import java.io.*;
 import java.net.URI;
@@ -74,7 +75,7 @@ public class RestServer implements Rest {
     }
 
     public static void main(String[] args) {
-        String URI_BASE = "http://localhost:9999/";
+        String URI_BASE = "http://"+ IP.hostAddress() +":9999/";
         System.out.println(URI_BASE);
         ResourceConfig config = new ResourceConfig();
         config.register(new RestServer());
