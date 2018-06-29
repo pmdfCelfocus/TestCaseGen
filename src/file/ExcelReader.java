@@ -12,12 +12,10 @@ import java.util.*;
 
 public class ExcelReader {
 
-    public static  Map<String , String> parseExcel(byte[] data) throws Exception {
+    public static  Map<String , String> parseExcel(String path) throws Exception {
         try {
            // FileInputStream file = new FileInputStream(ByteArrayToFile.insertDataToExcel("excel.xlsx", data));
-            FileUtils.writeByteArrayToFile(new File("excel"), data);
-            Thread.sleep(5000);
-            FileInputStream file = new FileInputStream(new File("excel.xlsx"));
+            FileInputStream file = new FileInputStream(new File(path));
             Map<String , String> tests = new TreeMap<>();
             Cell[] pair = new Cell[2];
             int counter = 0;

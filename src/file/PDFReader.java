@@ -5,7 +5,9 @@ import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import javafx.util.Pair;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,9 +16,8 @@ public class PDFReader {
 
     private static Map<String, List<String>> requirements = new TreeMap<>();
 
-    public static Map<String, List<String>> parsePDF(byte[] data) throws IOException {
-        //PdfReader reader = new PdfReader(data);
-        PdfReader reader = new PdfReader("srs_example_2010_group2.pdf");
+    public static Map<String, List<String>> parsePDF(String data) throws IOException {
+        PdfReader reader = new PdfReader(data);
         Pair<Integer,Integer> requirementPage = getRequirementsPageNumber(reader);
         Pair<Pair<Integer, Boolean>, List<String>> pair = new Pair<>(new Pair<>(0, true), new LinkedList<>());
         for (int i = requirementPage.getKey(); i < requirementPage.getValue(); i++) {
@@ -133,6 +134,7 @@ public class PDFReader {
         int nextChapter = -1;
         int nextChapterPage = 0;
         String str = null;
+        System.out.println(reader.getNumberOfPages());
         for (int i = 1; i < reader.getNumberOfPages(); i++) {
             String text = PdfTextExtractor.getTextFromPage(reader, i, new LocationTextExtractionStrategy());
             if (text.contains("Table of Contents")) {
