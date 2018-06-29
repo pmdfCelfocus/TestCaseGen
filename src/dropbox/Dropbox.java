@@ -27,7 +27,7 @@ public class Dropbox {
     protected static OAuth2AccessToken accessToken;
 
     public Dropbox(){
-        service = new ServiceBuilder().apiKey(APP_KEY).apiSecret(APP_SECRET)
+        service = new ServiceBuilder("APP_KEY").apiSecret(APP_SECRET)
                 .build(DropboxApi20.INSTANCE);
         accessToken = new OAuth2AccessToken(ACCESS_TOKEN);
     }

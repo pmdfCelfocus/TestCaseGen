@@ -1,14 +1,13 @@
 package rest;
 
-import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataParam;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataBodyPart;
 
-
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.io.InputStream;
 
 @Path("/")

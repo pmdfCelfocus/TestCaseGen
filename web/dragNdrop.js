@@ -4,15 +4,12 @@ const express = require("express");
 const path = require("path");
 const busboy = require('connect-busboy');
 const fs = require('fs');
-const FileAPI = require('file-api');
+//const FileAPI = require('file-api');
 const request = require('request');
-const rp = require('request-promise');
-const dbx = require('./dropBox');
 
 const app = express();
-const FileReader = FileAPI.FileReader;
-const File = FileAPI.File;
-const reader = new FileReader();
+//const FileReader = FileAPI.FileReader;
+//const File = FileAPI.File;
 
 
 app.use(express.static(path.join(__dirname, '/public')));
@@ -40,10 +37,6 @@ app.post('/file-upload', function (req, res) {
         });
 
     }
-        //dbx.addFile("/Share",filename,encode_utf8(file));
-
-        //dbx.addFile("/Share", filename, file);
-        // test(dir);
     );
 
 });
@@ -52,27 +45,20 @@ app.post('/file-upload', function (req, res) {
 
 function postFunc(extension, dir, filename) {
 
-    var options = {
-        method: 'POST',
-        uri: POST_URL + extension + "/upload",
-        headers: {
-            "content-type": "multipart/form-data",
-        },
-        formData: {
-            data: fs.createReadStream(dir)
-        }
-    }
-
-
-rp(options)
-    .then(function (response) {
-        console.log('Upload successful!  Server responded with:', response);
-    })
-    .catch(function (err) {
-        return console.error('upload failed:', err);
-    });
-
+var formData = {
+    data : fs.createReadStream(dir)
 };
+
+request.post({url: POST_URL + extension + "/upload", formData: formData},function optionalCallback(err, httpResponse, body) {
+    if (err) {
+      return console.error('upload failed:', err);
+    }
+    console.log('Upload successful!  Server responded with:', body);
+  });
+
+  
+
+}
 
 function findExtension(filename) {
     let charArray = Array.from(filename);
