@@ -12,9 +12,8 @@ import java.util.*;
 
 public class ExcelReader {
 
-    public static  Map<String , String> parseExcel(String path) throws Exception {
+    public static  Map<String , String> parseExcel(String path) {
         try {
-           // FileInputStream file = new FileInputStream(ByteArrayToFile.insertDataToExcel("excel.xlsx", data));
             FileInputStream file = new FileInputStream(new File(path));
             Map<String , String> tests = new TreeMap<>();
             Cell[] pair = new Cell[2];
@@ -34,7 +33,7 @@ public class ExcelReader {
                 tests.put(pair[0].getStringCellValue(), pair[1].getStringCellValue());
                 counter = 0;
             }
-           // file.close();
+           file.close();
             return tests;
         }catch (Exception e){
             e.printStackTrace();

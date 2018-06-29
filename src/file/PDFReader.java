@@ -5,9 +5,7 @@ import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import javafx.util.Pair;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
