@@ -1,5 +1,4 @@
 const POST_URL = "http://172.18.191.105:9999/";
-
 const express = require("express");
 const path = require("path");
 const busboy = require('connect-busboy');
@@ -16,7 +15,7 @@ console.log("Server started!");
 let collections = [];
 
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/TestCaseGen.html");
+    res.sendFile(__dirname + "/index.html");
 });
 
 app.post('/file-upload', function (req, res) {
@@ -48,7 +47,8 @@ function postFunc(dir, filename) {
         if (err) {
             return console.error('upload failed:', err);
         }
-        console.log('Upload successful!');
+        console.log('Upload successful! -> ' + body);
+        return '<p>' + body + '<\p>';
         collections[extension] = JSON.parse(body);
     });
 
@@ -66,3 +66,6 @@ function findExtension(filename) {
         }
     }
 }
+
+//-----------------------------------------------------------------------------
+

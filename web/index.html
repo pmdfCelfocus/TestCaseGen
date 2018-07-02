@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="dist/dropzone.css">
+    <script src="dist/dropzone.js" type="text/javascript"></script>
+    <link rel="icon" href="http://www.clker.com/cliparts/T/7/q/7/B/B/favicon-md.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <base href="/">
+    <title>
+        Test Case Generator
+    </title>
+</head>
+
+<body>
+
+    <h1>Test case Generator</h1>
+
+    <div class="informations" id="info">
+                <p id="leftBoxTitle"><b>Insert your files:</b></p>
+            <div class="dragNDrop" id="dNd">
+                <form action="/file-upload" class="dropzone">
+                    <div class="fallback">
+                        <input type="file" name="file" id="fileID" />
+                    </div>
+                </form>
+            </div>
+
+            <div id="instructions">
+            <p>Instructions:</p>
+            <p>- Insert a Requirements Specification PDF</p>
+            <p>- Insert the Test name / description Excel</p>
+            </div>
+    </div>
+
+    <div class="diagrams" id="diag">
+            <div class="activity" id="act"></div>
+            <div class="sequence" id="seq"></div>
+        </div>
+
+</body>
+
+</html>

@@ -16,7 +16,7 @@ public class MonkeyLearnRequest {
 
     private static final String CLASSIFIER_URL = "https://api.monkeylearn.com/v3/classifiers/cl_4yVFrrYo/classify/";
 
-    public static String createRequest(String[] textList) throws Exception {
+    public static String createRequest(String[] textList) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(CLASSIFIER_URL);
         httpPost.setHeader("Content-type", "application/json");

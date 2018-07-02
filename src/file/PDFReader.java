@@ -6,7 +6,10 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,12 +19,12 @@ public class PDFReader {
 
     public static Map<String, List<String>> parsePDF(String data) throws IOException {
         PdfReader reader = new PdfReader(data);
-        Pair<Integer,Integer> requirementPage = getRequirementsPageNumber(reader);
+        Pair<Integer, Integer> requirementPage = getRequirementsPageNumber(reader);
         Pair<Pair<Integer, Boolean>, List<String>> pair = new Pair<>(new Pair<>(0, true), new LinkedList<>());
         for (int i = requirementPage.getKey(); i < requirementPage.getValue(); i++) {
             String[] text = PdfTextExtractor.getTextFromPage(reader, i).split("\n");
             do {
-                    pair = processIEEERequirement(text, pair);
+                pair = processIEEERequirement(text, pair);
             } while (pair.getKey().getKey() < text.length);
             pair = new Pair<>(new Pair<>(0, pair.getKey().getValue()), pair.getValue());
         }
@@ -37,21 +40,8 @@ public class PDFReader {
     }
 
     private static int getPageNumber(String index) {
-        char[] indexToChar = index.trim().toCharArray();
-        String str = "";
-        boolean enter = false;
-        for (int i = 0; i < indexToChar.length; i++) {
-            if ((i + 1) == indexToChar.length) {
-                break;
-            }
-            if (indexToChar[i] == '.' && indexToChar[i + 1] != ' ')
-                enter = true;
-            if (indexToChar[i] != '.' && indexToChar[i + 1] != '.' && enter) {
-                str += indexToChar[i + 1];
-            }
-        }
-        System.err.println(str);
-        return Integer.parseInt(str);
+        String[] split = index.split(" ");
+        return Integer.parseInt(split[split.length - 1]);
     }
 
     private static boolean empty(final String s) {
@@ -65,15 +55,8 @@ public class PDFReader {
         return m.find();
     }
 
-    private static boolean endPage(String s){
+    private static boolean endPage(String s) {
         Pattern p = Pattern.compile("^(\\d|\\d\\d)\\s");
-        Matcher m = p.matcher(s);
-
-        return m.find();
-    }
-
-    private static boolean startsWith(String s, String prefix){
-        Pattern p = Pattern.compile("^" + prefix);
         Matcher m = p.matcher(s);
 
         return m.find();
@@ -99,8 +82,8 @@ public class PDFReader {
             }
 
         } else {
-            if(counter == 0)
-                counter = - 1;
+            if (counter == 0)
+                counter = -1;
             key = keys.get(keys.size() - 1);
             values = requirements.get(key);
         }
@@ -111,7 +94,7 @@ public class PDFReader {
 
             if (empty(str))
                 continue;
-            if( endPage(str) && counter + 2 == text.length)
+            if (endPage(str) && counter + 2 == text.length)
                 break;
             if ((stringContainsNumber(str) && !str.toLowerCase().contains("figure"))) {
                 finished = true;
@@ -129,9 +112,8 @@ public class PDFReader {
     private static Pair<Integer, Integer> getRequirementsPageNumber(PdfReader reader) throws IOException {
         int introductionPage = 0;
         int requirementsPage = 0;
-        int nextChapter = -1;
-        int nextChapterPage = 0;
-        String str = null;
+        int endChapterPage = 0;
+        boolean close = false;
         System.out.println(reader.getNumberOfPages());
         for (int i = 1; i < reader.getNumberOfPages(); i++) {
             String text = PdfTextExtractor.getTextFromPage(reader, i, new LocationTextExtractionStrategy());
@@ -140,27 +122,24 @@ public class PDFReader {
                 for (String index : indexes) {
                     if (empty(index))
                         continue;
-                    if (index.toLowerCase().contains("requirements") && index.charAt(2) == ' ') {
-                        str = "";
-                        str += index.charAt(0);
-                        nextChapter = Integer.parseInt(str);
-                        nextChapter++;
-                        str = "";
-                        str += nextChapter;
-                        requirementsPage = getPageNumber(index);
-                    }
-                    if(str != null && startsWith(index,str)){
-                        nextChapterPage = getPageNumber(index);
+                    if (index.toLowerCase().contains("appendix")) {
                         break;
                     }
+                    if (index.toLowerCase().contains("requirements") && !close) {
+                        requirementsPage = getPageNumber(index);
+                        close = true;
+                    } else if (stringContainsNumber(index)) {
+                        endChapterPage = getPageNumber(index);
+                    }
                 }
-            } else if (text.contains("Introduction")) {
-                introductionPage = i - 1;
+            } else if (text.toLowerCase().contains("introduction")) {
+                introductionPage = i;
             }
+
             if (requirementsPage != 0 && introductionPage != 0)
                 break;
         }
-        return new Pair<>(requirementsPage + introductionPage, nextChapterPage + introductionPage );
+        return new Pair<>(requirementsPage + introductionPage, endChapterPage + introductionPage);
     }
 
 }

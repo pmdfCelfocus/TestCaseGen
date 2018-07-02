@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import file.ExcelReader;
 import file.PDFReader;
+import monkeyLearn.ClassificationRequest;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import utils.IP;
@@ -31,9 +32,11 @@ public class RestServer implements Rest {
                 });
                 textList.add(str.toString());
             }
-            String[] array = new String[textList.size()]; // return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
+            String[] array = new String[textList.size()];
+            //return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
+
             return gson.toJson(textList.toArray(array));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -72,7 +75,7 @@ public class RestServer implements Rest {
     private String writeToFile(InputStream uploadedInputStream) {
         int read = 0;
         try {
-            byte[] bytes = new byte[205];
+            byte[] bytes = new byte[1024];
             String result = findName(uploadedInputStream);
             OutputStream out = new FileOutputStream(new File(result));
             while (((read = uploadedInputStream.read(bytes)) != -1)) {

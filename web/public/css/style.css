@@ -1,34 +1,39 @@
-.pdf {
-    border: 5px solid grey;
-    width:  500px;
-    height: 500px;
-  }
-
-.pdf .requirements{
-    border: 1px solid blue;
-    width:  90%;
-    height: 30%;
-    margin-top: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+body {
+    background: skyblue;
+    font-family: verdana;
+    color: #fff;
+    padding: 30px;
 }
-
-.pdf .requirements .reqMessage{
-    padding: 70px 0;
+h1 {
+    font-size: 90px;
     text-align: center;
 }
 
-.pdf .descriptions{
-    border: 1px solid blue;
-    width:  90%;
-    height: 30%;
-    margin-left: auto;
-    margin-right: auto;
+#dNd{
+    width: 350px;
+    height: 100px;
+    padding: 50px;
 }
 
-.pdf .requirements .descMessage{
-    padding: 70px 0;
+#leftBoxTitle{
+    font-size: 30px;
     text-align: center;
+}
+
+#info{
+    width: 450px;
+    border: 5px solid rebeccapurple;
+    height: 650px;
+    font-family: verdana;
+}
+
+#instructions{
+    padding: 20px;
+    font-size: 20px;
+}
+
+#diag{
+    float: right;
+    border: 5px solid rebeccapurple;
 }
 
