@@ -13,9 +13,10 @@ h1 {
     width: 350px;
     height: 100px;
     padding: 50px;
+    margin-top: -40px;
 }
 
-#leftBoxTitle{
+#title{
     font-size: 30px;
     text-align: center;
 }
@@ -25,6 +26,8 @@ h1 {
     border: 5px solid rebeccapurple;
     height: 650px;
     font-family: verdana;
+    margin: auto;
+    float: left;
 }
 
 #instructions{
@@ -33,7 +36,32 @@ h1 {
 }
 
 #diag{
-    float: right;
+    width: 68%;
     border: 5px solid rebeccapurple;
+    height: 650px;
+    font-family: verdana;
+    float: right;
+}
+
+#act{
+    width: 46%;
+    border: 5px solid rebeccapurple;
+    height: 80%;
+    font-family: verdana;
+    margin-left: 15px;
+    float: left;
+}
+
+#seq{
+    background-image: url("https://comotion.uw.edu/wp-content/uploads/2017/06/image.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 46%;
+    border: 5px solid rebeccapurple;
+    height: 80%;
+    font-family: verdana;
+    background-position: center;
+    margin-right: 15px;
+    float: right;
 }
 

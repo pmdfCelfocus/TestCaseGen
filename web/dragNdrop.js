@@ -1,10 +1,19 @@
 const POST_URL = "http://172.18.191.105:9999/";
+const HTML_DIR = __dirname + "/index.html";
+const TEMP_HTML = __dirname + "/temp.html";
+
+
 const express = require("express");
 const path = require("path");
 const busboy = require('connect-busboy');
 const fs = require('fs');
 const request = require('request');
 const app = express();
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const dom = new JSDOM(getHTML());
+console.log(dom.serialize());
+const document = dom.window.document;
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(busboy());
@@ -12,10 +21,12 @@ app.use(busboy());
 const http = require("http").Server(app).listen(80);
 console.log("Server started!");
 
-let collections = [];
+let json;
 
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/index.html");
+    //res.sendFile(HTML_DIR);
+    res.set('Content-Type', 'text/html');
+    res.send(getHTML());
 });
 
 app.post('/file-upload', function (req, res) {
@@ -28,7 +39,8 @@ app.post('/file-upload', function (req, res) {
         file.pipe(fstream);
         fstream.on('close', function () {
             res.redirect('back');
-            postFunc(dir,filename);
+            getJson(dir);
+            //postFunc(dir,filename);
         });
     }
     );
@@ -48,8 +60,7 @@ function postFunc(dir, filename) {
             return console.error('upload failed:', err);
         }
         console.log('Upload successful! -> ' + body);
-        return '<p>' + body + '<\p>';
-        collections[extension] = JSON.parse(body);
+        json = JSON.parse(body)
     });
 
 }
@@ -67,5 +78,52 @@ function findExtension(filename) {
     }
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------DIAGRAMS---------------------------------------------
+
+
+function getJson() {
+    json = JSON.parse(fs.readFileSync(__dirname + "/test.json", 'utf8'));
+    generateDiv();
+}
+
+function getHTML(){
+    return new Buffer (fs.readFileSync(HTML_DIR,null));
+}
+
+function processNodes() {
+    let value;
+    let obj;
+    Object.keys(json).forEach(function (key) {
+        console.log('Key -> ' + key);
+        value = json[key];
+        Object.keys(value).forEach(function (index) {
+            console.log('Index -> ' + index);
+            obj = value[index];
+            Object.keys(obj).forEach(function (attribute) {
+                console.log('Attribute-> ' + attribute);
+                console.log(obj[attribute]);
+            });
+        });
+    });
+}
+
+function generateDiv() {
+    var para = document.createElement("p");
+    
+    var node = document.createTextNode('YES');
+
+    var element = document.getElementById("instructions");
+
+    para.appendChild(node);
+    element.appendChild(para);
+    updateHTML();
+}
+
+function updateHTML(){
+    return fs.writeFileSync(TEMP_HTML,dom.serialize(),null);
+}
+
+
+
+
 

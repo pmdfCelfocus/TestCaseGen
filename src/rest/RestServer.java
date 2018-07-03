@@ -33,9 +33,9 @@ public class RestServer implements Rest {
                 textList.add(str.toString());
             }
             String[] array = new String[textList.size()];
-            //return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
+            return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
 
-            return gson.toJson(textList.toArray(array));
+          // return gson.toJson(textList.toArray(array));
         } catch (Exception e) {
             e.printStackTrace();
         }
