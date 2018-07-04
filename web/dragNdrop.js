@@ -10,23 +10,37 @@ const fs = require('fs');
 const request = require('request');
 const app = express();
 const jsdom = require("jsdom");
+const ejs = require('ejs');
+//const expressLayouts = require('express-ejs-layouts');
 const { JSDOM } = jsdom;
-const dom = new JSDOM(getHTML());
-console.log(dom.serialize());
-const document = dom.window.document;
+const dom = new JSDOM(getHTML(HTML_DIR));
+const window = dom.window;
+const document = window.document;
+
+app.set('view engine', 'ejs');
+//app.use(expressLayouts);
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
+    next();
+  });
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(busboy());
-
-const http = require("http").Server(app).listen(80);
 console.log("Server started!");
 
 let json;
 
-app.get("/", function (req, res) {
-    //res.sendFile(HTML_DIR);
-    res.set('Content-Type', 'text/html');
-    res.send(getHTML());
+/**app.get('/', function (req, res) {
+    //uploadHTML();
+    //res.set('Content-type', 'text/html');
+    //res.send(getHTML(TEMP_HTML));
+    res.render('pages/index');
+});
+**/
+app.get('/', function(req, res){
+    res.sendFile(__dirname + '/server.html');
 });
 
 app.post('/file-upload', function (req, res) {
@@ -38,13 +52,16 @@ app.post('/file-upload', function (req, res) {
         fstream = fs.createWriteStream(dir);
         file.pipe(fstream);
         fstream.on('close', function () {
-            res.redirect('back');
-            getJson(dir);
+            getJson();
             //postFunc(dir,filename);
+            res.redirect('back');
+            res.status(200).end('SUCESS');
         });
     }
     );
 });
+
+app.listen(8080,'localhost');
 
 //-------------------------------------------------------
 
@@ -83,11 +100,11 @@ function findExtension(filename) {
 
 function getJson() {
     json = JSON.parse(fs.readFileSync(__dirname + "/test.json", 'utf8'));
-    generateDiv();
 }
 
-function getHTML(){
-    return new Buffer (fs.readFileSync(HTML_DIR,null));
+function getHTML(file){
+    let buffer = new Buffer (fs.readFileSync(file,null));
+    return buffer;
 }
 
 function processNodes() {
@@ -107,7 +124,7 @@ function processNodes() {
     });
 }
 
-function generateDiv() {
+function generateDiv(res) {
     var para = document.createElement("p");
     
     var node = document.createTextNode('YES');
@@ -115,13 +132,25 @@ function generateDiv() {
     var element = document.getElementById("instructions");
 
     para.appendChild(node);
-    element.appendChild(para);
-    updateHTML();
+    var result = element.appendChild(para);
+   // uploadHTML();
+   res.render('pages/index', result);
+   res.redirect('back');
 }
 
-function updateHTML(){
-    return fs.writeFileSync(TEMP_HTML,dom.serialize(),null);
+function uploadHTML(){
+    fs.writeFileSync(TEMP_HTML,dom.serialize(),null);
 }
+
+function test(filename,data,options, res){
+    ejs.renderFile(filename, data, options, function(err, str){
+        if(err)
+            console.log(err);
+
+        res.render(filename);
+    });
+}
+
 
 
 
