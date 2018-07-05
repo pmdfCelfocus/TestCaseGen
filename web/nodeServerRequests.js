@@ -1,65 +1,34 @@
-const JS_SERVER = 'http://localhost:8080/file-upload';
+let requirements;
 
-function createRequest() {
-  var result = null;
-  if (window.XMLHttpRequest) {
-    // FireFox, Safari, etc.
-    result = new XMLHttpRequest();
-    if (typeof result.overrideMimeType != 'undefined') {
-      result.overrideMimeType('text/xml'); // Or anything else
-    }
-  }
-  else if (window.ActiveXObject) {
-    // MSIE
-    result = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  else {
-    // No known mechanism -- consider aborting the application
-  }
-  return result;
+function getContent(content){
+  requirements = content;
+  console.log(requirements);
+  generateDiv();
 }
 
-
-function XMLPostRequest(file) {
-  generateDiv(text, false);
-  document.getElementById("input").value = '';
-  var req = createRequest();
-  req.open("POST", JS_SERVER, true);
-  req.send(file);
-  req.onreadystatechange = function () {
-    if (req.readyState != 4) return;
-    if (req.status != 200) {
-      return;
-    }
-    //document.getElementById("response").innerHTML = resp;
-    generateDiv(resp, true);
-  }
-}
-
-/**document.getElementById('fileID').addEventListener('onchange', function(event){
-  let files = document.getElementById('fileID').files;
-  console.log(files);
-});
-**/
-
-function generateDiv(resp, isBot) {
-  var iDiv = document.createElement('div');
-  var para = document.createElement("p");
-  para.className = 'chat-message';
-  var node = document.createTextNode(resp);
-  var element = document.getElementById("logs");
-  if (isBot == true) {
-    iDiv.className = 'chat bot';
-    iDiv.id = 'bot';
-  } else {
-    iDiv.className = 'chat self';
-    iDiv.id = 'self';
-    var order = document.createElement('div');
-    order.className = 'blank';
-    iDiv.appendChild(order);
-  }
+function generateDiv() {
+  let para = document.createElement("p");
+  para.className = 'test';
+  let node = document.createTextNode('I GET IT NOW');
+  let element = document.getElementById("instructions");
 
   para.appendChild(node);
-  iDiv.appendChild(para);
-  element.appendChild(iDiv);
+  element.appendChild(para);
+}
+
+function processNodes() {
+  let value;
+  let obj;
+  Object.keys(json).forEach(function (key) {
+      console.log('Key -> ' + key);
+      value = json[key];
+      Object.keys(value).forEach(function (index) {
+          console.log('Index -> ' + index);
+          obj = value[index];
+          Object.keys(obj).forEach(function (attribute) {
+              console.log('Attribute-> ' + attribute);
+              console.log(obj[attribute]);
+          });
+      });
+  });
 }

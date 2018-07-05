@@ -17,6 +17,16 @@
 
 <body>
 
+    <script>
+        
+        Dropzone.options.myAwesomeDropzone = {
+            success : function(file, response){
+                getContent(response);
+            }
+        }
+        
+        </script>
+
     <h1>Test Case Generator</h1>
 
     <div class="informations" id="info">
@@ -24,11 +34,7 @@
             <b>Insert your files:</b>
         </p>
         <div class="dragNDrop" id="dNd">
-            <form action="http://localhost:8080/file-upload" class="dropzone">
-                <div class="fallback">
-                        <input type="file" name="file" id="fileID" multiple />
-                    </div>
-            </form>
+        <form action="http://localhost:8080/file-upload" class="dropzone" id="myAwesomeDropzone"></form>   
         </div>
 
 
