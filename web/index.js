@@ -77,6 +77,7 @@ function createNodes() {
     });
     
   });
+  draw();
 }
 
 function buildJSON(string, config, parent, key) {

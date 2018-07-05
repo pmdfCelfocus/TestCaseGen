@@ -2,7 +2,6 @@ body {
     background: skyblue;
     font-family: verdana;
     color: #fff;
-    padding: 30px;
 }
 h1 {
     font-size: 90px;
@@ -26,7 +25,6 @@ h1 {
     border: 5px solid rebeccapurple;
     height: 650px;
     font-family: verdana;
-    margin: auto;
     float: left;
 }
 
@@ -38,36 +36,56 @@ h1 {
 #diag{
     width: 68%;
     border: 5px solid rebeccapurple;
-    height: 650px;
+    height: 620px;
     font-family: verdana;
+    float: right;
+    padding: 15px;
+}
+
+#actMenu{
+    height: 85%;
+    width: 48%;
+    border: black solid 3px;
+    float: left;
+}
+
+#seqMenu{
+    height: 85%;
+    width: 48%;
+    border: black solid 3px;
     float: right;
 }
 
 #act{
-    width:80%;
+    height: 85%;
+    width: 98%;
     border: 5px solid rebeccapurple;
-    height: 100%;
     font-family: verdana;
-    margin-left: 15px;
-    float: left;
     background-color: #DAE4E4;
+    float: left;
 }
 
 #seq{
     background-image: url("https://i.redd.it/ounq1mw5kdxy.gif");
     background-repeat: no-repeat;
     background-size: cover;
-    width: 46%;
+    width: 98%;
     border: 5px solid rebeccapurple;
-    height: 80%;
+    height: 85%;
     font-family: verdana;
-    background-position: center;
-    margin-right: 15px;
     float: right;
 }
 
-#actMenu{
-    height: 400px;
-    width: 400px;
-    border: black solid 3px;
+#yes{
+    width: 48%;
+    height: 13%;
+    transform: translate(5px);
 }
+
+#no{
+    width: 48%;
+    height: 13%;
+    transform: translate(10px);
+}
+
+
