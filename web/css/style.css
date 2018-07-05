@@ -44,22 +44,17 @@ h1 {
 }
 
 #act{
-    width: 46%;
+    width:80%;
     border: 5px solid rebeccapurple;
-    height: 80%;
+    height: 100%;
     font-family: verdana;
     margin-left: 15px;
     float: left;
-}
-
-#mydiagramDiv{
-    width: 400px;
-    height: 400px;
     background-color: #DAE4E4;
 }
 
 #seq{
-    background-image: url("https://comotion.uw.edu/wp-content/uploads/2017/06/image.jpg");
+    background-image: url("https://i.redd.it/ounq1mw5kdxy.gif");
     background-repeat: no-repeat;
     background-size: cover;
     width: 46%;
@@ -69,4 +64,10 @@ h1 {
     background-position: center;
     margin-right: 15px;
     float: right;
+}
+
+#actMenu{
+    height: 400px;
+    width: 400px;
+    border: black solid 3px;
 }

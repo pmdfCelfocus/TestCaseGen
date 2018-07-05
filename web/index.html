@@ -5,7 +5,8 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="dist/dropzone.css">
     <script src="dist/dropzone.js" type="text/javascript"></script>
-    <script src="nodeServerRequests.js" type=""></script>
+    <script src="index.js" type="text/javascript"></script>
+    <script src="https://gojs.net/latest/release/go.js" type="text/javascript"></script>
     <link rel="icon" href="http://icons-for-free.com/icon/download-avatar_ninja_samurai_warrior_icon-310270.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
@@ -15,17 +16,20 @@
     </title>
 </head>
 
-<body>
+<body onload="init()">
 
     <script>
-        
         Dropzone.options.myAwesomeDropzone = {
-            success : function(file, response){
+            success: function (file, response) {
                 getContent(response);
             }
         }
-        
-        </script>
+
+        function init() {
+            getGO(go.GraphObject.make);
+        }
+
+    </script>
 
     <h1>Test Case Generator</h1>
 
@@ -34,7 +38,7 @@
             <b>Insert your files:</b>
         </p>
         <div class="dragNDrop" id="dNd">
-        <form action="http://localhost:8080/file-upload" class="dropzone" id="myAwesomeDropzone"></form>   
+            <form action="http://localhost:8080/file-upload" class="dropzone" id="myAwesomeDropzone"></form>
         </div>
 
 
@@ -46,12 +50,28 @@
     </div>
 
     <div class="diagrams" id="diag">
+
         <p id="title">
             <b>Diagrams:</b>
         </p>
-        <div class="activity" id="act"></div>
-        <div class="sequence" id="seq"></div>
+      
+            <div id="actMenu">
+                    <div class="activity" id="act">
+                        </div>
+            </div>
+            
+            
+
+        <div id="seqMenu">
+            <div class="sequence" id="seq">
+            </div>
+            
+        </div>
+
+
     </div>
+
+
 
 </body>
 
