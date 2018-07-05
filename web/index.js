@@ -52,11 +52,13 @@ function createNodes() {
         let string = String(current);
         if (string.includes('When')) {
           start = true;
+          string = string.replace('When', '');
           json = buildJSON(string, 0, parent, key);
         }
         else if (string.includes('Then')) {
           if (!start)
             continue;
+          string = string.replace('Then', '');
           json = buildJSON(string, 1, parent, key);
         }
         else if ((string.includes('Given') || string === '')) {
@@ -65,6 +67,7 @@ function createNodes() {
         else {
           if (!start)
             continue;
+          string = string.replace('And', '');
           json = buildJSON(string, 2, parent, key);
         }
         key++;
@@ -75,7 +78,7 @@ function createNodes() {
       nodeDataArray.push(buildJSON('END', 0, parent++, key++));
       nodesArrays.push(nodeDataArray);
     });
-    
+
   });
   draw();
 }
@@ -98,8 +101,8 @@ function getGO(model) {
 
 function draw() {
   //init();
-let nodeDataArray = nodesArrays.pop();
-console.log(nodesArrays);
+  let nodeDataArray = nodesArrays.pop();
+  console.log(nodesArrays);
   actDiagram.nodeTemplate =
     $(go.Node, "Vertical",
       { background: "#000" },
