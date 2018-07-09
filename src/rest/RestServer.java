@@ -1,13 +1,17 @@
 package rest;
 
 import com.google.gson.Gson;
+import com.sun.jersey.multipart.MultiPart;
 import file.ExcelReader;
 import file.PDFReader;
 import monkeyLearn.ClassificationRequest;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import utils.Diagram;
 import utils.IP;
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.*;
 import java.net.URI;
 import java.util.LinkedList;
@@ -51,6 +55,18 @@ public class RestServer implements Rest {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Response generate(String json) {
+        String test = "{\"Select Spanish as preferred language\":\"[{\\\"key\\\":0,\\\"name\\\":\\\"INIT\\\",\\\"parent\\\":-1,\\\"__gohashid\\\":602},{\\\"key\\\":1,\\\"name\\\":\\\" the administrator selects Spanish as a new language\\\",\\\"parent\\\":0,\\\"__gohashid\\\":603},{\\\"key\\\":2,\\\"name\\\":\\\"  the web-portal will show all text in Spanish\\\",\\\"parent\\\":1,\\\"__gohashid\\\":604},{\\\"key\\\":3,\\\"name\\\":\\\"END\\\",\\\"parent\\\":2,\\\"__gohashid\\\":605}]\"}\n";
+        System.out.println(json);
+        Diagram[] d = gson.fromJson(json,Diagram[].class);
+
+        System.out.println(d);
+
+        return Response.ok("", MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + "" + "\"" ) //optional
+                .build();
     }
 
     private String findName(InputStream uploadedInputStream) {

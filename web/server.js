@@ -6,6 +6,12 @@ const fs = require('fs');
 const request = require('request');
 const app = express();
 
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
+
+app.use(bodyParser.json());
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
@@ -22,6 +28,12 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/server.html');
 });
 
+app.post('/generate', function(req, res){
+    let json = req.body;
+    console.log(req.body);
+    generatePost(json);
+});
+
 app.post('/file-upload', function (req, res) {
     let fstream;
     req.pipe(req.busboy);
@@ -33,7 +45,7 @@ app.post('/file-upload', function (req, res) {
         fstream.on('close', function () {
             res.set('Content-type', 'application/json');
             res.send(getJson());
-            //res.send(postFunc(dir,filename));
+            //res.send(uploadPost(dir,filename));
             res.status(200).end('SUCESS');
         });
     }
@@ -44,7 +56,7 @@ app.listen(8080,'localhost');
 
 //-------------------------------------------------------
 
-function postFunc(dir, filename) {
+function uploadPost(dir, filename) {
     let extension = findExtension(filename);
 
     let formData = {
@@ -60,6 +72,32 @@ function postFunc(dir, filename) {
     });
 
 }
+
+function generatePost(body){
+    /*request.post({ url: 'http://172.18.191.105:9999/generate', form: body }, function optionalCallback(err, httpResponse, body) {
+         if(err){
+             return console.error('upload failed:', err);
+         }
+         console.log('Upload successful! ->' +  body);
+        }
+      );
+      */
+
+//Custom Header pass
+request(
+        {
+        method:'post',
+        url:'http://172.18.191.105:9999/generate', 
+        form: body,
+        headers: {
+            'content-type': 'text/plain'
+        }
+    }, function (error, response, body) {  
+        //Print the Response
+        console.log(body);
+}); 
+}
+
 
 function findExtension(filename) {
     let charArray = Array.from(filename);
