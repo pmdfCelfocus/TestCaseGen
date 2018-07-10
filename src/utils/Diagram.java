@@ -3,18 +3,18 @@ package utils;
 public class Diagram {
 
     private String name;
-    private Node[] nodes;
+    private Steps[] steps;
 
-    public Diagram(String name, Node[] nodes){
+    public Diagram(String name, Steps[] steps){
         this.name = name;
-        this.nodes = nodes;
+        this.steps = steps;
     }
 
     public String getName() {
         return name;
     }
 
-    public Node[] getNodes() {
-        return nodes;
+    public Steps[] getNodes() {
+        return steps;
     }
 }

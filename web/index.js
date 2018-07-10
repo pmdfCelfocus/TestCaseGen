@@ -16,8 +16,7 @@ function getContent(content) {
 function addForm() {
   if (nodeDataArray != 'undefined' && nodesArrays !=0) {
     console.log(nodeDataArray.name);
-    //formData.append(nodeDataArray.name, JSON.stringify(nodeDataArray.steps));
-    dic[nodeDataArray.name] = JSON.stringify(nodeDataArray.steps);
+    formData.append("diagram", JSON.stringify(nodeDataArray));
     draw();
   }
 }
@@ -46,6 +45,7 @@ function processNodes() {
 }
 
 function createNodes() {
+  //TODO -> Add desc to Test OBJ
   Object.keys(onlyScenarios).forEach(function (index) {
     let scenarioArray = onlyScenarios[index];
     Object.keys(scenarioArray).forEach(function (title) {
@@ -113,7 +113,6 @@ function getGO(model) {
 
 function draw() {
   if(nodesArrays.length == 0){
-    //sendSelected(formData);
     sendSelected();
     alert('No more diagrams!');
     actDiagram.clear();
@@ -138,21 +137,24 @@ function draw() {
 function sendSelected() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', 'http://localhost:8080/generate', true);
-  //console.log(formData);
   //xhr.send(formData);
-  xhr.setRequestHeader('Content-type', 'application/json');
-  console.log(dic);
-  xhr.send(dic);
+  //xhr.setRequestHeader('Content-type', 'application/json');
+  xhr.send(formData);
 }
 
 function Test(name, steps) {
   this.name = name;
+  //this.desc = desc;
   this.steps = steps;
 }
 
 Test.prototype.getName = function () {
   return this.name;
 }
+
+//Test.prototype.getDesc = function() {
+ // return this.desc;
+//}
 
 Test.prototype.getSteps = function () {
   return this.steps;

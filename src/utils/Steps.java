@@ -1,20 +1,20 @@
 package utils;
 
-public class Node {
+public class Steps {
 
-        private int key;
+        private String key;
         private String name;
-        private int parent;
-        private int __gohashid;
+        private String parent;
+        private String __gohashid;
 
-        public Node(int key, String name, int parent, int __gohashid){
+        public Steps(String key, String name, String parent, String __gohashid){
             this.key = key;
             this.name = name;
             this.parent = parent;
             this.__gohashid = __gohashid;
         }
 
-    public int getKey() {
+    public String getKey() {
         return key;
     }
 
@@ -22,7 +22,7 @@ public class Node {
         return name;
     }
 
-    public int getParent() {
+    public String getParent() {
         return parent;
     }
 }

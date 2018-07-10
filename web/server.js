@@ -10,8 +10,6 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
-app.use(bodyParser.json());
-
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
@@ -28,10 +26,15 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/server.html');
 });
 
-app.post('/generate', function(req, res){
+app.post('/generate', upload.array() ,function(req, res){
+    req.body = JSON.stringify(req.body);
     let json = req.body;
-    console.log(req.body);
-    generatePost(json);
+    let dir = __dirname + "/files/test.json";
+    fs.writeFileSync(dir, json, function(err){
+        if(err)
+        console.error(err);
+    });
+    generatePost(dir);
 });
 
 app.post('/file-upload', function (req, res) {
@@ -73,28 +76,20 @@ function uploadPost(dir, filename) {
 
 }
 
-function generatePost(body){
-    /*request.post({ url: 'http://172.18.191.105:9999/generate', form: body }, function optionalCallback(err, httpResponse, body) {
-         if(err){
-             return console.error('upload failed:', err);
-         }
-         console.log('Upload successful! ->' +  body);
-        }
-      );
-      */
-
+function generatePost(dir){
+      let formData = {
+          data: fs.createReadStream(dir)
+      }
 //Custom Header pass
-request(
+request.post(
         {
-        method:'post',
         url:'http://172.18.191.105:9999/generate', 
-        form: body,
-        headers: {
-            'content-type': 'text/plain'
+        formData: formData
+    }, function optionalCallback(err, httpResponse, body) {  
+        if (err) {
+            return console.error('upload failed:', err);
         }
-    }, function (error, response, body) {  
-        //Print the Response
-        console.log(body);
+        console.log('Upload successful! -> ' + body);
 }); 
 }
 
