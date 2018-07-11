@@ -34,7 +34,7 @@ app.post('/generate', upload.array() ,function(req, res){
         if(err)
         console.error(err);
     });
-    generatePost(dir);
+    res.download(generatePost(dir));
 });
 
 app.post('/file-upload', function (req, res) {
@@ -90,9 +90,24 @@ request.post(
             return console.error('upload failed:', err);
         }
         console.log('Upload successful! -> ' + body);
+        let path = findFileName(httpResponse.headers['content-disposition']);
+        console.log(path);
+        fs.writeFileSync(__dirname + "/files/"+ path, body);
+        return path;
 }); 
 }
 
+
+function findFileName(header){
+    let string = String(header);
+    string.replace("'",'');
+    let firstSplit = header.split(';');
+    string = firstSplit[1];
+    let secondSplit = string.split('=');
+    string = secondSplit[1];
+    console.log(string);
+    return string.substring(0,string.length - 1);
+}
 
 function findExtension(filename) {
     let charArray = Array.from(filename);

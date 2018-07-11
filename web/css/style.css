@@ -21,13 +21,21 @@ h1 {
     text-align: center;
 }
 
+#titles{
+    height: 15%;
+}
+
 #diagTitle{
+    height: 80%;
     font-size: 30px;
-    text-align: left;
+    text-align: center;
 }
 
 #diagName{
-    text-align: right;
+    height: 50%;
+    font-size: 30px;
+    text-align: center;
+    float: right;
 }
 
 #info{
@@ -71,13 +79,13 @@ h1 {
 #yes{
     width: 48%;
     height: 13%;
-    transform: translate(5px);
+    
 }
 
 #no{
     width: 48%;
     height: 13%;
-    transform: translate(40px);
+    transform: translate(45px);
 }
 
 #myAwesomeDropzone{

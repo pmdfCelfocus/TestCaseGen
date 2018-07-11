@@ -66,11 +66,11 @@ public class RestServer implements Rest {
     }
 
     public Response generate(InputStream uploadedInputStream) throws IOException {
-            ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
-
-        return Response.ok("", MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"" + "" + "\"" ) //optional
-                .build();
+        File f =  ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
+        Response.ResponseBuilder response = Response.ok((Object) f);
+        response.header("Content-Disposition",
+                "attachment; filename=new-excel-file.xls");
+        return response.build();
     }
 
     private String findName(InputStream uploadedInputStream) {

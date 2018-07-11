@@ -8,6 +8,7 @@ import utils.Diagram;
 import utils.ResultObj;
 import utils.Steps;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -15,13 +16,12 @@ public class ExcelCreator {
 
     private static String[] columns = {"Name", "Description", "Step", "Step name", "Expected result"};
 
-    public static byte[] createExcel(byte[] data) {
+    public static File createExcel(byte[] data) {
 
         String json = processJSON(getBody(data));
         Gson g = new Gson();
         ResultObj result = g.fromJson(json, ResultObj.class);
-        writeExcel(result);
-        return null;
+        return writeExcel(result);
     }
 
     private static String getBody(byte[] data){
@@ -29,7 +29,7 @@ public class ExcelCreator {
         return split[4];
     }
 
-    private static void writeExcel(ResultObj result) {
+    private static File writeExcel(ResultObj result) {
         //TODO -> Missing row problem
         Workbook workbook = new XSSFWorkbook();
         CreationHelper creationHelper = workbook.getCreationHelper();
@@ -87,14 +87,18 @@ public class ExcelCreator {
             sheet.autoSizeColumn(i);
         }
 
+        String path = "D:\\Estagio\\TestCases" + Math.random() +".xlsx";
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\Estagio\\TestCases" + Math.random() +".xlsx");
+
+            FileOutputStream fileOutputStream = new FileOutputStream(path);
             workbook.write(fileOutputStream);
             fileOutputStream.close();
             workbook.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return new File(path);
     }
 
 

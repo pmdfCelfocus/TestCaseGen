@@ -35,45 +35,44 @@
 
     <div class='container'>
         <div class="row">
-                <div class="info" id="info">
+            <div class="info" id="info">
 
-                    <p id="title">
-                        <b>Insert your files:</b>
-                    </p>
-                    <div class="dragNDrop" id="dNd">
-                        <form action="http://localhost:8080/file-upload" class="dropzone" id="myAwesomeDropzone"></form>
-                    </div>
+                <p id="title">
+                    <b>Insert your files:</b>
+                </p>
+                <div class="dragNDrop" id="dNd">
+                    <form action="http://localhost:8080/file-upload" class="dropzone" id="myAwesomeDropzone"></form>
+                </div>
 
 
-                    <div id="instructions">
-                        <p>Instructions:</p>
-                        <p>- Insert a Requirements Specification PDF</p>
-                        <p>- Insert the Test name / description Excel</p>
-                    </div>
-
+                <div id="instructions">
+                    <p>Made by:</p>
+                    <p>Pedro Feiteira</p>
                 </div>
 
             </div>
-            <div class="col">
-                <div class="diagrams" id="diag">
 
-                    <p id="diagTitle">
-                        <b>Diagram:</b>
-                    </p>
+        </div>
+        <div class="col">
+            <div class="diagrams" id="diag">
 
-                    <p id="diagName">
-                    </p>
+                <div id="titles">
 
-                    <div id="actMenu">
-                        <div class="activity" id="act">
-                        </div>
-                        <button id="yes" onclick="addForm()">YES</button>
-                        <button id="no" onclick="draw()">NO</button>
-                    </div>
-
+                    <b id="diagTitle">Diagram:</b>
+                    <b id="diagName">
+                    </b>
                 </div>
+
+                <div id="actMenu">
+                    <div class="activity" id="act">
+                    </div>
+                    <button id="yes" onclick="addForm()">YES</button>
+                    <button id="no" onclick="draw()">NO</button>
+                </div>
+
             </div>
         </div>
+    </div>
     </div>
 
 </body>
