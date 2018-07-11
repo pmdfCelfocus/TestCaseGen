@@ -6,6 +6,10 @@ const fs = require('fs');
 const request = require('request');
 const app = express();
 
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control");
@@ -22,6 +26,17 @@ app.get('/', function(req, res){
     res.sendFile(__dirname + '/server.html');
 });
 
+app.post('/generate', upload.array() ,function(req, res){
+    req.body = JSON.stringify(req.body);
+    let json = req.body;
+    let dir = __dirname + "/files/test.json";
+    fs.writeFileSync(dir, json, function(err){
+        if(err)
+        console.error(err);
+    });
+    res.download(generatePost(dir));
+});
+
 app.post('/file-upload', function (req, res) {
     let fstream;
     req.pipe(req.busboy);
@@ -33,7 +48,7 @@ app.post('/file-upload', function (req, res) {
         fstream.on('close', function () {
             res.set('Content-type', 'application/json');
             res.send(getJson());
-            //res.send(postFunc(dir,filename));
+            //res.send(uploadPost(dir,filename));
             res.status(200).end('SUCESS');
         });
     }
@@ -44,7 +59,7 @@ app.listen(8080,'localhost');
 
 //-------------------------------------------------------
 
-function postFunc(dir, filename) {
+function uploadPost(dir, filename) {
     let extension = findExtension(filename);
 
     let formData = {
@@ -59,6 +74,39 @@ function postFunc(dir, filename) {
         json = JSON.parse(body);
     });
 
+}
+
+function generatePost(dir){
+      let formData = {
+          data: fs.createReadStream(dir)
+      }
+//Custom Header pass
+request.post(
+        {
+        url:'http://172.18.191.105:9999/generate', 
+        formData: formData
+    }, function optionalCallback(err, httpResponse, body) {  
+        if (err) {
+            return console.error('upload failed:', err);
+        }
+        console.log('Upload successful! -> ' + body);
+        let path = findFileName(httpResponse.headers['content-disposition']);
+        console.log(path);
+        fs.writeFileSync(__dirname + "/files/"+ path, body);
+        return path;
+}); 
+}
+
+
+function findFileName(header){
+    let string = String(header);
+    string.replace("'",'');
+    let firstSplit = header.split(';');
+    string = firstSplit[1];
+    let secondSplit = string.split('=');
+    string = secondSplit[1];
+    console.log(string);
+    return string.substring(0,string.length - 1);
 }
 
 function findExtension(filename) {

@@ -1,5 +1,6 @@
 import file.PDFReader;
 import monkeyLearn.ClassificationRequest;
+import rest.RestServer;
 
 import java.io.IOException;
 import java.util.*;
@@ -8,7 +9,7 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception{
-        try {
+        /*try {
             Map<String, List<String>> requirements = PDFReader.parsePDF(null);
             List<String> textList = new LinkedList<>();
             for(String key : requirements.keySet()) {
@@ -23,7 +24,10 @@ public class Main {
             System.out.println("TEST");
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
+        }*/
 
+        RestServer server = new RestServer();
+        server.generate(null);
+
+    }
 }
