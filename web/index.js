@@ -2,9 +2,7 @@ let requirements;
 let onlyScenarios = [];
 let $;
 let actDiagram;
-let seqDiagram;
 let nodesArrays = [];
-let dic = {};
 let formData = new FormData();
 let nodeDataArray;
 
@@ -15,7 +13,6 @@ function getContent(content) {
 
 function addForm() {
   if (nodeDataArray != 'undefined' && nodesArrays !=0) {
-    console.log(nodeDataArray.name);
     formData.append("diagram", JSON.stringify(nodeDataArray));
     draw();
   }
@@ -25,17 +22,27 @@ function processNodes() {
   let value;
   let obj;
   Object.keys(requirements).forEach(function (key) {
-    //console.log('Key -> ' + key);
     value = requirements[key];
     Object.keys(value).forEach(function (index) {
-      //console.log('Index -> ' + index);
       obj = value[index];
       Object.keys(obj).forEach(function (attribute) {
-        // console.log('Attribute-> ' + attribute);
         if (attribute === 'desc') {
           if (obj[attribute]['hasScenario']) {
             let scenarios = obj[attribute]['scenarios'];
-            onlyScenarios.push(scenarios);
+            let base = String(obj[attribute]['base']);
+            let result = base.split(":");
+            base = result[1];
+            result = base.split('\n');
+            base = '';
+            for(let i = 0; i < result.length; i++){
+              if(i === 0){
+                base += result[i] + ": "
+              }else{
+                base += result[i].toLocaleLowerCase() + " "
+              }
+            }
+            let scenario = new Scenario(base, scenarios);
+            onlyScenarios.push(scenario);
           }
         }
       });
@@ -45,49 +52,44 @@ function processNodes() {
 }
 
 function createNodes() {
-  //TODO -> Add desc to Test OBJ
   Object.keys(onlyScenarios).forEach(function (index) {
-    let scenarioArray = onlyScenarios[index];
+    let scenarioArray = onlyScenarios[index].scenarios;
     Object.keys(scenarioArray).forEach(function (title) {
+      console.log(title);
+      let desc = onlyScenarios[index].base;
+      console.log(desc);
       let nodeDataArray = [];
-      let start = false;
       let steps = scenarioArray[title];
-      let json;
       let parent = -1;
       let key = 0;
       nodeDataArray.push(buildJSON('INIT', parent, key));
       parent++;
       key++;
       for (var i = 0; i < steps.length; i++) {
+        let json;
         let current = steps[String(i)];
         let string = String(current);
-        if (string.includes('When')) {
-          start = true;
-          string = string.replace('When', '');
-          json = buildJSON(string, parent, key);
-        }
-        else if (string.includes('Then')) {
-          if (!start)
-            continue;
-          string = string.replace('Then', '');
-          json = buildJSON(string, parent, key);
-        }
-        else if ((string.includes('Given') || string === '')) {
+        if(string === '')
           continue;
+        if (string.includes('When')) {
+          string = string.replace('When', '');
+        }
+        else if (string.includes('Then')) {        
+          string = string.replace('Then', '');
+        }
+        else if ((string.includes('Given'))) {
+          string = string.replace('Given', ''); 
         }
         else {
-          if (!start)
-            continue;
           string = string.replace('And', '');
-          json = buildJSON(string, parent, key);
         }
+        json = buildJSON(string, parent, key);
         key++;
         parent++;
         nodeDataArray.push(json);
-
       }
-      nodeDataArray.push(buildJSON('END', parent++, key++));
-      let temp = new Test(title, nodeDataArray);
+      nodeDataArray.push(buildJSON('END', parent, key));
+      let temp = new Test(title, desc , nodeDataArray);
       nodesArrays.push(temp);
     });
 
@@ -96,6 +98,10 @@ function createNodes() {
 }
 
 function buildJSON(string, parent, key) {
+  if(string.includes('{')){
+    console.log(string);
+    console.log('Dafuq is going on!?!?');
+  }
   let result = {
     key: key,
     name: string,
@@ -107,8 +113,11 @@ function buildJSON(string, parent, key) {
 
 function getGO(model) {
   $ = model;
-  actDiagram = $(go.Diagram, "act");
-  seqDiagram = $(go.Diagram, "seq");
+  actDiagram = $(go.Diagram, "act", {
+    contentAlignment: go.Spot.Center,
+    layout: $(go.TreeLayout,
+      { angle: 90, layerSpacing: 35 })
+  });
 }
 
 function draw() {
@@ -118,9 +127,8 @@ function draw() {
     actDiagram.clear();
   }else{
     nodeDataArray = nodesArrays.pop();
-    console.log(nodeDataArray.steps);
     actDiagram.nodeTemplate =
-      $(go.Node, "Vertical",
+      $(go.Node, "Horizontal",
         { background: "#000" },
         $(go.TextBlock, "Default Text",
           { margin: 8, stroke: "white", font: "bold 16px sans-serif" },
@@ -130,21 +138,24 @@ function draw() {
     var model = $(go.TreeModel);
     model.nodeDataArray = nodeDataArray.steps;
     actDiagram.model = model;
-    //actDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+    showName(nodeDataArray.name);
   }
+}
+
+function showName(name){
+  let diagName = document.getElementById('diagName');
+  diagName.innerHTML = name;
 }
 
 function sendSelected() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', 'http://localhost:8080/generate', true);
-  //xhr.send(formData);
-  //xhr.setRequestHeader('Content-type', 'application/json');
   xhr.send(formData);
 }
 
-function Test(name, steps) {
+function Test(name, desc,steps) {
   this.name = name;
-  //this.desc = desc;
+  this.desc = desc;
   this.steps = steps;
 }
 
@@ -152,10 +163,25 @@ Test.prototype.getName = function () {
   return this.name;
 }
 
-//Test.prototype.getDesc = function() {
- // return this.desc;
-//}
+Test.prototype.getDesc = function() {
+ return this.desc;
+}
 
 Test.prototype.getSteps = function () {
   return this.steps;
+}
+
+//----------------------------------------
+
+function Scenario(base, scenarios){
+  this.base = base;
+  this.scenarios = scenarios;
+}
+
+Scenario.prototype.getBase = function(){
+  return this.base;
+}
+
+Scenario.prototype.getScenarios = function(){
+  return this.scenarios;
 }

@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sun.jersey.multipart.MultiPart;
+import file.ExcelCreator;
 import file.ExcelReader;
 import file.PDFReader;
 import monkeyLearn.ClassificationRequest;
+import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import utils.Diagram;
-import utils.DiagramArr;
 import utils.IP;
 
 import javax.ws.rs.core.MediaType;
@@ -34,7 +35,7 @@ public class RestServer implements Rest {
     public String analyzePDF(InputStream uploadedInputStream) {
 
         try {
-            Map<String, List<String>> requirements = PDFReader.parsePDF(writeToFile(uploadedInputStream, false));
+            Map<String, List<String>> requirements = PDFReader.parsePDF(writeToFile(uploadedInputStream));
             List<String> textList = new LinkedList<>();
             for (String key : requirements.keySet()) {
                 StringBuilder str = new StringBuilder();
@@ -44,9 +45,9 @@ public class RestServer implements Rest {
                 textList.add(str.toString());
             }
             String[] array = new String[textList.size()];
-            return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
+            //return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
 
-          // return gson.toJson(textList.toArray(array));
+           return gson.toJson(textList.toArray(array));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +58,7 @@ public class RestServer implements Rest {
 
     public String analyzeExcel(InputStream uploadedInputStream) {
         try {
-            return gson.toJson(ExcelReader.parseExcel(writeToFile(uploadedInputStream, false)));
+            return gson.toJson(ExcelReader.parseExcel(writeToFile(uploadedInputStream)));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -65,47 +66,11 @@ public class RestServer implements Rest {
     }
 
     public Response generate(InputStream uploadedInputStream) throws IOException {
-            byte[] encoded = Files.readAllBytes(Paths.get(writeToFile(uploadedInputStream, true)));
-            String json = gson.toJson(processJSON(new String(encoded)));
-            //json = gson.toJson(json);
-            //String json = "{\n" +
-            //        "    \"diagram\": [\n" +
-            //        "        {\"name\":\"Select Spanish as preferred language\",\"steps\":[{\"key\":0,\"name\":\"INIT\",\"parent\":-1,\"__gohashid\":602},{\"key\":1,\"name\":\" the administrator selects Spanish as a new language\",\"parent\":0,\"__gohashid\":603},{\"key\":2,\"name\":\"  the web-portal will show all text in Spanish\",\"parent\":1,\"__gohashid\":604},{\"key\":3,\"name\":\"END\",\"parent\":2,\"__gohashid\":605}]},\n" +
-            //        "        {\"name\":\"Select English as preferred language\",\"steps\":[{\"key\":0,\"name\":\"INIT\",\"parent\":-1,\"__gohashid\":956},{\"key\":1,\"name\":\" the administrator selects English as a new language\",\"parent\":0,\"__gohashid\":957},{\"key\":2,\"name\":\"  the web-portal will show all text in English\",\"parent\":1,\"__gohashid\":958},{\"key\":3,\"name\":\"END\",\"parent\":2,\"__gohashid\":959}]},\n" +
-            //        "        {\"name\":\"Select French as preferred language\",\"steps\":[{\"key\":0,\"name\":\"INIT\",\"parent\":-1,\"__gohashid\":1128},{\"key\":1,\"name\":\" the administrator selects French as a new language\",\"parent\":0,\"__gohashid\":1129},{\"key\":2,\"name\":\"  the web-portal will show all text in French\",\"parent\":1,\"__gohashid\":1130},{\"key\":3,\"name\":\"END\",\"parent\":2,\"__gohashid\":1131}]}\n" +
-            //        "    ]\n" +
-            //        "}";
-
-        Gson g = new Gson();
-        Type type = new TypeToken<DiagramArr>() {
-        }.getType();
-            DiagramArr d = g.fromJson(json,type);
-
+            ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
 
         return Response.ok("", MediaType.APPLICATION_OCTET_STREAM)
                 .header("Content-Disposition", "attachment; filename=\"" + "" + "\"" ) //optional
                 .build();
-    }
-
-    private String processJSON(String json){
-
-        json = json.replace("\\", "");
-        //System.out.println(json);
-        json = json.replace("\"{", "{");
-        //System.out.println(json);
-        json = json.replace("}\"", "}");
-        //System.out.println(json);
-        json = json.replace("\",\"","");
-        //System.out.println(json);
-        json = json.replace("{","{\n");
-        System.out.println(json);
-        json = json.replace("{\"diagram\":[", "{\\n\"diagram\":[\\n" );
-        System.out.println(json);
-        json = json.replace("]", "]\\n");
-        System.out.println(json);
-        json = json.replace(",",",\\n");
-        System.out.println(json);
-        return json;
     }
 
     private String findName(InputStream uploadedInputStream) {
@@ -135,25 +100,14 @@ public class RestServer implements Rest {
         return null;
     }
 
-    private String writeToFile(InputStream uploadedInputStream, boolean isJSON) {
+    private String writeToFile(InputStream uploadedInputStream) {
         int read = 0;
         try {
             byte[] bytes = new byte[1024];
             String result = findName(uploadedInputStream);
             OutputStream out = new FileOutputStream(new File(result));
             while (((read = uploadedInputStream.read(bytes)) != -1)) {
-                if(isJSON){
-                    String[] split = new String(bytes,"Cp1252").split("\n");
-                    for(String temp : split){
-                        if(temp.contains(message)){
-                            break;
-                        }
-                        byte[] array = temp.getBytes("Cp1252");
-                        out.write(array, 0, array.length);
-                    }
-                }else{
                  out.write(bytes,0,read);
-                }
             }
             out.flush();
             out.close();

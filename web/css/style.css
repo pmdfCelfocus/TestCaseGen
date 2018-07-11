@@ -9,15 +9,25 @@ h1 {
 }
 
 #dNd{
-    width: 350px;
-    height: 100px;
-    padding: 50px;
-    margin-top: -40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    height: 200px;
 }
 
 #title{
     font-size: 30px;
     text-align: center;
+}
+
+#diagTitle{
+    font-size: 30px;
+    text-align: left;
+}
+
+#diagName{
+    text-align: right;
 }
 
 #info{
@@ -31,6 +41,7 @@ h1 {
 #instructions{
     padding: 20px;
     font-size: 20px;
+    transform: translateY(20px);
 }
 
 #diag{
@@ -44,36 +55,17 @@ h1 {
 
 #actMenu{
     height: 85%;
-    width: 48%;
-    border: black solid 3px;
+    width: 99%;
     float: left;
-}
-
-#seqMenu{
-    height: 85%;
-    width: 48%;
-    border: black solid 3px;
-    float: right;
 }
 
 #act{
     height: 85%;
-    width: 98%;
+    width: 100%;
     border: 5px solid rebeccapurple;
     font-family: verdana;
     background-color: #DAE4E4;
     float: left;
-}
-
-#seq{
-    background-image: url("https://i.redd.it/ounq1mw5kdxy.gif");
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 98%;
-    border: 5px solid rebeccapurple;
-    height: 85%;
-    font-family: verdana;
-    float: right;
 }
 
 #yes{
@@ -85,7 +77,11 @@ h1 {
 #no{
     width: 48%;
     height: 13%;
-    transform: translate(10px);
+    transform: translate(40px);
 }
 
+#myAwesomeDropzone{
+    height: 100%;
+    width: 100%;
+}
 
