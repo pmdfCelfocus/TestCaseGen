@@ -67,6 +67,7 @@ public class RestServer implements Rest {
 
     public Response generate(InputStream uploadedInputStream) throws IOException {
         File f =  ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
+        //TODO
         Response.ResponseBuilder response = Response.ok((Object) f);
         response.header("Content-Disposition",
                 "attachment; filename=new-excel-file.xls");
