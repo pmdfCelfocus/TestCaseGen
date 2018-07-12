@@ -98,10 +98,6 @@ function createNodes() {
 }
 
 function buildJSON(string, parent, key) {
-  if(string.includes('{')){
-    console.log(string);
-    console.log('Dafuq is going on!?!?');
-  }
   let result = {
     key: key,
     name: string,
@@ -147,9 +143,33 @@ function showName(name){
   diagName.innerHTML = name;
 }
 
+function create(url){
+  let newDiv = document.createElement('div');
+  newDiv.id = 'download';
+  newDiv.className = 'download';
+  document.getElementsByTagName('body')[0].appendChild(newDiv);
+
+  let newEl = document.createElement('a');
+  newEl.setAttribute('href', url);
+  newEl.setAttribute('download', 'test');
+  
+  newDiv.appendChild(newEl);
+
+}
+
+
 function sendSelected() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', 'http://localhost:8080/generate', true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState != 4) {
+      console.log(xhr.responseText);
+      create(xhr.responseText);
+    }
+    if (xhr.status != 200) {
+    return;
+    }
+  }
   xhr.send(formData);
 }
 

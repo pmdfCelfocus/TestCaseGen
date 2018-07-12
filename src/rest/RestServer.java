@@ -9,17 +9,25 @@ import file.ExcelReader;
 import file.PDFReader;
 import monkeyLearn.ClassificationRequest;
 import org.apache.commons.io.IOUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
+import org.glassfish.jersey.message.internal.MessageBodyFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import utils.Diagram;
 import utils.IP;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,12 +74,13 @@ public class RestServer implements Rest {
     }
 
     public Response generate(InputStream uploadedInputStream) throws IOException {
-        File f =  ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
-        //TODO
-        Response.ResponseBuilder response = Response.ok((Object) f);
-        response.header("Content-Disposition",
-                "attachment; filename=new-excel-file.xls");
-        return response.build();
+        String path = ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
+        File f = new File(path);
+        InputStream is =  new FileInputStream(f);
+        InputStreamReader isr = new InputStreamReader(is,"Cp1252");
+        return Response.ok(isr, MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + "aaa.csv" + "\"" ) //optional
+                .build();
     }
 
     private String findName(InputStream uploadedInputStream) {

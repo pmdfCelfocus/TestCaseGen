@@ -1,6 +1,7 @@
 package file;
 
 import com.google.gson.Gson;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -8,15 +9,15 @@ import utils.Diagram;
 import utils.ResultObj;
 import utils.Steps;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 
 public class ExcelCreator {
 
     private static String[] columns = {"Name", "Description", "Step", "Step name", "Expected result"};
 
-    public static File createExcel(byte[] data) {
+    public static String createExcel(byte[] data) {
 
         String json = processJSON(getBody(data));
         Gson g = new Gson();
@@ -24,12 +25,12 @@ public class ExcelCreator {
         return writeExcel(result);
     }
 
-    private static String getBody(byte[] data){
+    private static String getBody(byte[] data) {
         String[] split = new String(data).split("\n");
         return split[4];
     }
 
-    private static File writeExcel(ResultObj result) {
+    private static String writeExcel(ResultObj result) {
         //TODO -> Missing row problem
         Workbook workbook = new XSSFWorkbook();
         CreationHelper creationHelper = workbook.getCreationHelper();
@@ -87,18 +88,20 @@ public class ExcelCreator {
             sheet.autoSizeColumn(i);
         }
 
-        String path = "D:\\Estagio\\TestCases" + Math.random() +".xlsx";
+        String path = "D:\\Estagio\\TestCases" + Math.random() + ".csv";
         try {
 
             FileOutputStream fileOutputStream = new FileOutputStream(path);
             workbook.write(fileOutputStream);
             fileOutputStream.close();
             workbook.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new File(path);
+        return path;
+
     }
 
 
