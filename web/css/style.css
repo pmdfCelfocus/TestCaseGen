@@ -62,6 +62,9 @@ h1 {
 }
 
 #actMenu{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     height: 85%;
     width: 99%;
     float: left;
@@ -69,7 +72,7 @@ h1 {
 
 #act{
     height: 85%;
-    width: 100%;
+    width: 99%;
     border: 5px solid rebeccapurple;
     font-family: verdana;
     background-color: #DAE4E4;
@@ -77,15 +80,30 @@ h1 {
 }
 
 #yes{
-    width: 48%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
     height: 13%;
-    
+    float : left;
 }
 
 #no{
-    width: 48%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
     height: 13%;
-    transform: translate(45px);
+    float : right;
+}
+
+#ready{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    height: 13%;
+    float : center;
 }
 
 #myAwesomeDropzone{

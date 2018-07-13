@@ -119,8 +119,6 @@ function getGO(model) {
 function draw() {
   if(nodesArrays.length == 0){
     sendSelected();
-    alert('No more diagrams!');
-    actDiagram.clear();
   }else{
     nodeDataArray = nodesArrays.pop();
     actDiagram.nodeTemplate =
@@ -152,19 +150,22 @@ function create(url){
   let newEl = document.createElement('a');
   newEl.setAttribute('href', url);
   newEl.setAttribute('download', 'test');
-  
+
   newDiv.appendChild(newEl);
 
 }
 
 
 function sendSelected() {
+  addForm();
+  actDiagram.clear();
   var xhr = new XMLHttpRequest();
   xhr.open('POST', 'http://localhost:8080/generate', true);
   xhr.onreadystatechange = function() {
     if (xhr.readyState != 4) {
-      console.log(xhr.responseText);
-      create(xhr.responseText);
+      let response = xhr.response;
+      console.log(response);
+      create(response);
     }
     if (xhr.status != 200) {
     return;

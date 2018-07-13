@@ -76,10 +76,8 @@ public class RestServer implements Rest {
     public Response generate(InputStream uploadedInputStream) throws IOException {
         String path = ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
         File f = new File(path);
-        InputStream is =  new FileInputStream(f);
-        InputStreamReader isr = new InputStreamReader(is,"Cp1252");
-        return Response.ok(isr, MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"" + "aaa.csv" + "\"" ) //optional
+        return Response.ok(f, MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + f.getName() + "\"" ) //optional
                 .build();
     }
 

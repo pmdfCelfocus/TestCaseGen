@@ -1,17 +1,13 @@
 package file;
 
 import com.google.gson.Gson;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import utils.Diagram;
 import utils.ResultObj;
 import utils.Steps;
-
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 
 public class ExcelCreator {
 
@@ -88,7 +84,7 @@ public class ExcelCreator {
             sheet.autoSizeColumn(i);
         }
 
-        String path = "D:\\Estagio\\TestCases" + Math.random() + ".csv";
+        String path = "D:\\Estagio\\TestCases" + Math.random() + ".xlsx";
         try {
 
             FileOutputStream fileOutputStream = new FileOutputStream(path);

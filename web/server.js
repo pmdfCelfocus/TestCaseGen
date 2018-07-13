@@ -22,7 +22,6 @@ app.use(busboy());
 console.log("Server started!");
 
 let json;
-let str;
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/server.html');
@@ -36,8 +35,7 @@ app.post('/generate', upload.array(), function (req, res) {
         if (err)
             console.error(err);
     });
-    generatePost(dir)
-    res.send(str);
+    generatePost(dir, res);
 });
 
 app.post('/file-upload', function (req, res) {
@@ -79,27 +77,21 @@ function uploadPost(dir, filename) {
 
 }
 
-function generatePost(dir) {
+function generatePost(dir, res) {
     let formData = {
         data: fs.createReadStream(dir)
     }
-    //Custom Header pass
     request.post(
         {
             url: 'http://172.18.191.105:9999/generate',
             formData: formData
-        }, function optionalCallback(err, httpResponse, body) {
-            if (err) {
-                return console.error('upload failed:', err);
-            }
-            str = iconv.encode(body, 'windows-1252');
-            console.log('Upload successful! -> ' + str);
-            //str = __dirname + '\\' + findFileName(httpResponse.headers['content-disposition']);
-            let path = findFileName(httpResponse.headers['content-disposition']);
-            fs.writeFileSync(__dirname + "/files/" + path, str);
-            //result = __dirname + "/files/" + path;
+        }).on('response', function(response){
+            let filename;
+            filename = new String(findFileName(response.headers['content-disposition']));
+            response.pipe(fs.createWriteStream(__dirname + "/files/" + filename));
+            res.send(__dirname + "/files/" + filename);
         });
-}
+    }
 
 
 function findFileName(header) {
