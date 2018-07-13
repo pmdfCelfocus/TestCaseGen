@@ -17,7 +17,7 @@ function addForm() {
   }
 }
 
-function next(){
+function next() {
   addForm();
   draw();
 }
@@ -134,12 +134,18 @@ function draw() {
     var model = $(go.TreeModel);
     model.nodeDataArray = nodeDataArray.steps;
     actDiagram.model = model;
-    showName(nodeDataArray.name);
+    showName('diagName',nodeDataArray.name);
   }
 }
 
-function showName(name) {
-  let diagName = document.getElementById('diagName');
+let first = false;
+
+function showName(id, name) {
+  if(!first){
+    first = true;
+    insertButtons();
+  }
+  let diagName = document.getElementById(id);
   diagName.innerHTML = name;
 }
 
@@ -159,13 +165,12 @@ function create(url) {
 
 }
 
-
-function clearDiagName(){
+function clearDiagName() {
   let diagName = document.getElementById('diagName');
   diagName.parentNode.removeChild(diagName);
 }
 
-function reset(){
+function reset() {
   actDiagram.clear();
   clearDiagName();
 }
@@ -181,7 +186,7 @@ function sendSelected() {
       console.log(response);
       if (response != '')
         create(response);
-        return;
+      return;
     }
     if (xhr.status != 200) {
       return;
@@ -221,4 +226,24 @@ Scenario.prototype.getBase = function () {
 
 Scenario.prototype.getScenarios = function () {
   return this.scenarios;
+}
+
+function insertButtons() {
+    createButton('yes', 'Add Diagram', 'next()');
+    createButton('no', 'Reject Diagram', 'draw()');
+    showName('or','OR');
+    createButton('ready', 'Send Now', 'sendSelected()');
+}
+
+
+function createButton(id, text, funcName) {
+  let buttonsDiv = document.getElementById('buttons');
+  let btn = document.createElement('button');
+  btn.id = id;
+  btn.setAttribute('onclick', funcName);
+  let node = document.createTextNode(text);
+
+  btn.appendChild(node);
+  buttonsDiv.appendChild(btn);
+
 }
