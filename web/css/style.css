@@ -111,3 +111,35 @@ h1 {
     width: 100%;
 }
 
+#download{
+    height: 25%;
+    width: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#btn{
+    text-align: center;
+    color: whitesmoke;
+    background-color: black;
+    cursor: pointer;
+    border: none;
+    height: 50%;
+    width: 80%;
+}
+#btn:hover{
+    background-color: gray;
+}
+
+#dl{
+    font-family: Verdana;
+    text-decoration: none;
+    color: whitesmoke;
+    font-size: 20px;
+}
+
+
+

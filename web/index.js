@@ -12,10 +12,14 @@ function getContent(content) {
 }
 
 function addForm() {
-  if (nodeDataArray != 'undefined' && nodesArrays !=0) {
+  if (nodeDataArray != 'undefined' && nodesArrays != 0) {
     formData.append("diagram", JSON.stringify(nodeDataArray));
-    draw();
   }
+}
+
+function next(){
+  addForm();
+  draw();
 }
 
 function processNodes() {
@@ -34,10 +38,10 @@ function processNodes() {
             base = result[1];
             result = base.split('\n');
             base = '';
-            for(let i = 0; i < result.length; i++){
-              if(i === 0){
+            for (let i = 0; i < result.length; i++) {
+              if (i === 0) {
                 base += result[i] + ": "
-              }else{
+              } else {
                 base += result[i].toLocaleLowerCase() + " "
               }
             }
@@ -55,9 +59,7 @@ function createNodes() {
   Object.keys(onlyScenarios).forEach(function (index) {
     let scenarioArray = onlyScenarios[index].scenarios;
     Object.keys(scenarioArray).forEach(function (title) {
-      console.log(title);
       let desc = onlyScenarios[index].base;
-      console.log(desc);
       let nodeDataArray = [];
       let steps = scenarioArray[title];
       let parent = -1;
@@ -69,16 +71,16 @@ function createNodes() {
         let json;
         let current = steps[String(i)];
         let string = String(current);
-        if(string === '')
+        if (string === '')
           continue;
         if (string.includes('When')) {
           string = string.replace('When', '');
         }
-        else if (string.includes('Then')) {        
+        else if (string.includes('Then')) {
           string = string.replace('Then', '');
         }
         else if ((string.includes('Given'))) {
-          string = string.replace('Given', ''); 
+          string = string.replace('Given', '');
         }
         else {
           string = string.replace('And', '');
@@ -89,7 +91,7 @@ function createNodes() {
         nodeDataArray.push(json);
       }
       nodeDataArray.push(buildJSON('END', parent, key));
-      let temp = new Test(title, desc , nodeDataArray);
+      let temp = new Test(title, desc, nodeDataArray);
       nodesArrays.push(temp);
     });
 
@@ -117,9 +119,9 @@ function getGO(model) {
 }
 
 function draw() {
-  if(nodesArrays.length == 0){
+  if (nodesArrays.length == 0) {
     sendSelected();
-  }else{
+  } else {
     nodeDataArray = nodesArrays.pop();
     actDiagram.nodeTemplate =
       $(go.Node, "Horizontal",
@@ -128,7 +130,7 @@ function draw() {
           { margin: 8, stroke: "white", font: "bold 16px sans-serif" },
           new go.Binding("text", "name"))
       );
-  
+
     var model = $(go.TreeModel);
     model.nodeDataArray = nodeDataArray.steps;
     actDiagram.model = model;
@@ -136,45 +138,59 @@ function draw() {
   }
 }
 
-function showName(name){
+function showName(name) {
   let diagName = document.getElementById('diagName');
   diagName.innerHTML = name;
 }
 
-function create(url){
-  let newDiv = document.createElement('div');
-  newDiv.id = 'download';
-  newDiv.className = 'download';
-  document.getElementsByTagName('body')[0].appendChild(newDiv);
-
+function create(url) {
+  let div = document.getElementById('download');
+  let newbutton = document.createElement('button');
+  newbutton.id = 'btn';
   let newEl = document.createElement('a');
+  newEl.id = 'dl';
+  let text = document.createTextNode('Download Here')
   newEl.setAttribute('href', url);
-  newEl.setAttribute('download', 'test');
+  newEl.setAttribute('download', 'TestCase.xlsx');
 
-  newDiv.appendChild(newEl);
+  newEl.appendChild(text);
+  newbutton.appendChild(newEl);
+  div.appendChild(newbutton);
 
 }
 
 
+function clearDiagName(){
+  let diagName = document.getElementById('diagName');
+  diagName.parentNode.removeChild(diagName);
+}
+
+function reset(){
+  actDiagram.clear();
+  clearDiagName();
+}
+
 function sendSelected() {
   addForm();
-  actDiagram.clear();
+  reset();
   var xhr = new XMLHttpRequest();
   xhr.open('POST', 'http://localhost:8080/generate', true);
-  xhr.onreadystatechange = function() {
+  xhr.onreadystatechange = function () {
     if (xhr.readyState != 4) {
-      let response = xhr.response;
+      let response = xhr.responseText;
       console.log(response);
-      create(response);
+      if (response != '')
+        create(response);
+        return;
     }
     if (xhr.status != 200) {
-    return;
+      return;
     }
   }
   xhr.send(formData);
 }
 
-function Test(name, desc,steps) {
+function Test(name, desc, steps) {
   this.name = name;
   this.desc = desc;
   this.steps = steps;
@@ -184,8 +200,8 @@ Test.prototype.getName = function () {
   return this.name;
 }
 
-Test.prototype.getDesc = function() {
- return this.desc;
+Test.prototype.getDesc = function () {
+  return this.desc;
 }
 
 Test.prototype.getSteps = function () {
@@ -194,15 +210,15 @@ Test.prototype.getSteps = function () {
 
 //----------------------------------------
 
-function Scenario(base, scenarios){
+function Scenario(base, scenarios) {
   this.base = base;
   this.scenarios = scenarios;
 }
 
-Scenario.prototype.getBase = function(){
+Scenario.prototype.getBase = function () {
   return this.base;
 }
 
-Scenario.prototype.getScenarios = function(){
+Scenario.prototype.getScenarios = function () {
   return this.scenarios;
 }

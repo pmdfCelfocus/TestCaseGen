@@ -1,10 +1,10 @@
 package utils;
 
-public class ResultObj {
+public class MultipleDiagrams {
 
     private Diagram[] diagram;
 
-    public ResultObj(Diagram[] diagram){
+    public MultipleDiagrams(Diagram[] diagram){
         this.diagram = diagram;
     }
 

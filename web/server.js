@@ -5,11 +5,12 @@ const busboy = require('connect-busboy');
 const fs = require('fs');
 const request = require('request');
 const app = express();
-const iconv = require('iconv-lite');
 
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
+
+let json;
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -21,8 +22,6 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(busboy());
 console.log("Server started!");
 
-let json;
-
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/server.html');
 });
@@ -30,7 +29,7 @@ app.get('/', function (req, res) {
 app.post('/generate', upload.array(), function (req, res) {
     req.body = JSON.stringify(req.body);
     let json = req.body;
-    let dir = __dirname + "/files/test.json";
+    let dir = __dirname + "/files/toSend.json";
     fs.writeFileSync(dir, json, function (err) {
         if (err)
             console.error(err);
@@ -72,7 +71,8 @@ function uploadPost(dir, filename) {
             return console.error('upload failed:', err);
         }
         console.log('Upload successful! -> ' + body);
-        json = JSON.parse(body);
+        //json = JSON.parse(body);
+        return JSON.parse(body);
     });
 
 }
@@ -101,7 +101,6 @@ function findFileName(header) {
     string = firstSplit[1];
     let secondSplit = string.split('=');
     string = secondSplit[1];
-    console.log(string);
     return string.substring(1, string.length - 1);
 }
 
