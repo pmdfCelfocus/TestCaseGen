@@ -1,13 +1,17 @@
 package rest;
 
 import com.google.gson.Gson;
+import file.ExcelCreator;
 import file.ExcelReader;
 import file.PDFReader;
-import monkeyLearn.ClassificationRequest;
+import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import utils.FileHandling;
 import utils.IP;
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.*;
 import java.net.URI;
 import java.util.LinkedList;
@@ -16,14 +20,13 @@ import java.util.Map;
 
 public class RestServer implements Rest {
 
-    private static final String BASE_PATH = "D:\\Estagio\\";
-
     Gson gson = new Gson();
 
     public String analyzePDF(InputStream uploadedInputStream) {
 
         try {
-            Map<String, List<String>> requirements = PDFReader.parsePDF(writeToFile(uploadedInputStream));
+            String path = FileHandling.writeToFile(uploadedInputStream);
+            Map<String, List<String>> requirements = PDFReader.parsePDF(path);
             List<String> textList = new LinkedList<>();
             for (String key : requirements.keySet()) {
                 StringBuilder str = new StringBuilder();
@@ -33,9 +36,9 @@ public class RestServer implements Rest {
                 textList.add(str.toString());
             }
             String[] array = new String[textList.size()];
-            return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
+            //return gson.toJson(ClassificationRequest.response(textList.toArray(array)));
 
-          // return gson.toJson(textList.toArray(array));
+            return gson.toJson(textList.toArray(array));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,54 +49,20 @@ public class RestServer implements Rest {
 
     public String analyzeExcel(InputStream uploadedInputStream) {
         try {
-            return gson.toJson(ExcelReader.parseExcel(writeToFile(uploadedInputStream)));
+            String path = FileHandling.writeToFile(uploadedInputStream);
+            return gson.toJson(ExcelReader.parseExcel(path));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private String findName(InputStream uploadedInputStream) {
-        checkAndCreateDirectory();
-        try {
-            byte[] bytes = new byte[205];
-            uploadedInputStream.read(bytes);
-            String text = new String(bytes, "Cp1252");
-            String[] split = text.split("\n");
-            for (String s : split) {
-                if (s.contains("filename")) {
-                    String[] extraction = s.split("filename=");
-                    return BASE_PATH + extraction[1].substring(1, extraction[1].length() - 2);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String writeToFile(InputStream uploadedInputStream) {
-        int read = 0;
-        try {
-            byte[] bytes = new byte[1024];
-            String result = findName(uploadedInputStream);
-            OutputStream out = new FileOutputStream(new File(result));
-            while (((read = uploadedInputStream.read(bytes)) != -1)) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-            out.close();
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static void checkAndCreateDirectory() {
-        File directory = new File(BASE_PATH);
-        if (!directory.exists())
-            directory.mkdirs();
+    public Response generate(InputStream uploadedInputStream) throws IOException {
+        String path = ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
+        File f = new File(path);
+        return Response.ok(f, MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + f.getName() + "\"") //optional
+                .build();
     }
 
     public static void main(String[] args) {

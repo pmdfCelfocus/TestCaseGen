@@ -52,6 +52,12 @@ h1 {
     float: left;
 }
 
+#mydiagramDiv{
+    width: 400px;
+    height: 400px;
+    background-color: #DAE4E4;
+}
+
 #seq{
     background-image: url("https://comotion.uw.edu/wp-content/uploads/2017/06/image.jpg");
     background-repeat: no-repeat;

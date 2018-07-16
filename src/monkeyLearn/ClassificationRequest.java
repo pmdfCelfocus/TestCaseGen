@@ -1,13 +1,17 @@
 package monkeyLearn;
 
 import com.google.gson.Gson;
+import utils.ObjectParse.monkeyLearn.Classifications;
+import utils.ObjectParse.monkeyLearn.DESC;
+import utils.ObjectParse.monkeyLearn.Details;
+import utils.ObjectParse.monkeyLearn.Requirement;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClassificationRequest {
-
+    private static final String SCENARIO = "scenario";
     private static Gson gson = new Gson();
 
     public static Map<String, List<Requirement>> response(String[] textList) {
@@ -44,17 +48,17 @@ public class ClassificationRequest {
             if (stringContainsID(split[i].toLowerCase())) {
                 id = split[i];
                 for (int j = i + 1; j < split.length; j++, i++) {
-                    if (split[j].toLowerCase().contains("scenario")) {
+                    if (split[j].toLowerCase().contains(SCENARIO)) {
                         break;
                     } else {
                         base += split[j] + "\n";
                     }
                 }
-            } else if (split[i].toLowerCase().contains("scenario")) {
+            } else if (split[i].toLowerCase().contains(SCENARIO)) {
                 String key = split[i].substring(10, split[i].length());
                 List<String> steps = new LinkedList<>();
                 for (int j = i + 1; j < split.length; j++, i++) {
-                    if (split[j].toLowerCase().contains("scenario")) {
+                    if (split[j].toLowerCase().contains(SCENARIO)) {
                         break;
                     } else {
                         steps.add(split[j]);

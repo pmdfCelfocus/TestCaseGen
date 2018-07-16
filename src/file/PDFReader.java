@@ -16,6 +16,10 @@ import java.util.regex.Pattern;
 public class PDFReader {
 
     private static Map<String, List<String>> requirements = new TreeMap<>();
+    private static final String TABLE_CONST = "Table of Contents";
+    private static final String APPENDIX = "appendix";
+    private static final String REQ = "requirements";
+    private static final String INTRO = "introduction";
 
     public static Map<String, List<String>> parsePDF(String data) throws IOException {
         PdfReader reader = new PdfReader(data);
@@ -36,6 +40,7 @@ public class PDFReader {
             });
             System.out.println();
         }
+
         return requirements;
     }
 
@@ -117,22 +122,22 @@ public class PDFReader {
         System.out.println(reader.getNumberOfPages());
         for (int i = 1; i < reader.getNumberOfPages(); i++) {
             String text = PdfTextExtractor.getTextFromPage(reader, i, new LocationTextExtractionStrategy());
-            if (text.contains("Table of Contents")) {
+            if (text.contains(TABLE_CONST)) {
                 String[] indexes = text.split("\n");
                 for (String index : indexes) {
                     if (empty(index))
                         continue;
-                    if (index.toLowerCase().contains("appendix")) {
+                    if (index.toLowerCase().contains(APPENDIX)) {
                         break;
                     }
-                    if (index.toLowerCase().contains("requirements") && !close) {
+                    if (index.toLowerCase().contains(REQ) && !close) {
                         requirementsPage = getPageNumber(index);
                         close = true;
                     } else if (stringContainsNumber(index)) {
                         endChapterPage = getPageNumber(index);
                     }
                 }
-            } else if (text.toLowerCase().contains("introduction")) {
+            } else if (text.toLowerCase().contains(INTRO)) {
                 introductionPage = i;
             }
 
