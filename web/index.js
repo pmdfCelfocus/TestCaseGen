@@ -9,6 +9,7 @@ let nodesArrays = [];
 let formData = new FormData();
 let nodeDataArray;
 let first = false;
+let postHandler = true;
 
 function getContent(content) {
   requirements = content;
@@ -95,6 +96,9 @@ function createNodes() {
       nodeDataArray.push(buildJSON('END', parent, key));
       let temp = new Test(title, desc, nodeDataArray);
       nodesArrays.push(temp);
+      if(postHandler){
+        postHandler = false;
+      }
     });
 
   });
@@ -158,23 +162,25 @@ function showName(id, name) {
 }
 
 function sendSelected() {
-  addForm();
-  reset();
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', POST_URL, true);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState != 4) {
-      let response = xhr.responseText;
-      console.log(response);
-      if (response != '')
-        createDownload(response);
-      return;
+  if(!postHandler){
+    addForm();
+    reset();
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', POST_URL, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState != 4) {
+        let response = xhr.responseText;
+        console.log(response);
+        if (response != '')
+          createDownload(response);
+        return;
+      }
+      if (xhr.status != 200) {
+        return;
+      }
     }
-    if (xhr.status != 200) {
-      return;
-    }
+    xhr.send(formData);
   }
-  xhr.send(formData);
 }
 
 function reset() {

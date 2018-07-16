@@ -32,7 +32,7 @@ public class PDFReader {
             } while (pair.getKey().getKey() < text.length);
             pair = new Pair<>(new Pair<>(0, pair.getKey().getValue()), pair.getValue());
         }
-       /* System.out.println("Extracted text:");
+        System.out.println("Extracted text:");
         for (String k : requirements.keySet()) {
             System.out.println("My title: " + k + "\n");
             requirements.get(k).forEach(value -> {
@@ -40,7 +40,7 @@ public class PDFReader {
             });
             System.out.println();
         }
-        */
+
         return requirements;
     }
 

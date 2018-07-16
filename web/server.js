@@ -49,10 +49,10 @@ app.post('/file-upload', function (req, res) {
         fstream = fs.createWriteStream(dir);
         file.pipe(fstream);
         fstream.on('close', function () {
-            res.set('Content-type', 'application/json');
             //Test
+            res.set('Content-type', 'application/json');
             res.send(getJson());
-            //res.send(uploadPost(dir,filename));
+            //uploadPost(dir,filename);
             res.status(200).end('SUCESS');
         });
     }
@@ -63,7 +63,7 @@ app.listen(8080, 'localhost');
 
 //-------------------------------------------------------
 
-function uploadPost(dir, filename) {
+function uploadPost(dir, filename, res) {
     let extension = findExtension(filename);
 
     let formData = {
@@ -75,7 +75,7 @@ function uploadPost(dir, filename) {
             return console.error('upload failed:', err);
         }
         console.log('Upload successful! -> ' + body);
-        return JSON.parse(body);
+        res.send(JSON.parse(body));
     });
 
 }
