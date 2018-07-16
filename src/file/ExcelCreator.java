@@ -4,14 +4,21 @@ import com.google.gson.Gson;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import utils.Diagram;
-import utils.MultipleDiagrams;
-import utils.SingleDiagram;
-import utils.Steps;
+import utils.FileHandling;
+import utils.ObjectParse.Diagram;
+import utils.ObjectParse.MultipleDiagrams;
+import utils.ObjectParse.SingleDiagram;
+import utils.ObjectParse.Steps;
 
 import java.io.FileOutputStream;
 
 public class ExcelCreator {
+
+    private static final String TEST_CONST = "Test Cases";
+    private static final String INITIAL_NODE = "init";
+    private static final String END_NODE = "end";
+    private static final String ASSUMPTIONS_AND_CONDITIONS = "Assumptions & Conditions:";
+    private static final String TEST_NAME = "TestCases.xlsx";
 
     private static String[] columns = {"Name", "Description", "Step", "Step name", "Expected result"};
 
@@ -36,12 +43,9 @@ public class ExcelCreator {
     }
 
     private static String writeExcel(Object result) {
-
-        //TODO -> Missing row problem
         Workbook workbook = new XSSFWorkbook();
-        CreationHelper creationHelper = workbook.getCreationHelper();
 
-        Sheet sheet = workbook.createSheet("Test Cases");
+        Sheet sheet = workbook.createSheet(TEST_CONST);
 
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
@@ -71,13 +75,13 @@ public class ExcelCreator {
             for (Steps step : d.getNodes()) {
                 Row row = sheet.createRow(lastRow++);
                 row.createCell(2).setCellValue(stepCount++);
-                if (step.getName().toLowerCase().equals("init")) {
-                    row.createCell(3).setCellValue("Assumptions & Conditions:");
+                if (step.getName().toLowerCase().equals(INITIAL_NODE)) {
+                    row.createCell(3).setCellValue(ASSUMPTIONS_AND_CONDITIONS);
                     row.createCell(4).setCellValue(split[1]);
                 } else {
                     row.createCell(3).setCellValue(step.getName().toLowerCase());
-                    if (step.getName().toLowerCase().equals("end")) {
-                        row.createCell(4).setCellValue("end");
+                    if (step.getName().toLowerCase().equals(END_NODE)) {
+                        row.createCell(4).setCellValue(END_NODE);
                     } else {
                         row.createCell(4).setCellValue("Success");
                     }
@@ -92,13 +96,13 @@ public class ExcelCreator {
                 for (Steps step : d.getNodes()) {
                     Row row = sheet.createRow(lastRow++);
                     row.createCell(2).setCellValue(stepCount++);
-                    if (step.getName().toLowerCase().equals("init")) {
-                        row.createCell(3).setCellValue("Assumptions & Conditions:");
+                    if (step.getName().toLowerCase().equals(INITIAL_NODE)) {
+                        row.createCell(3).setCellValue(ASSUMPTIONS_AND_CONDITIONS);
                         row.createCell(4).setCellValue(split[1]);
                     } else {
                         row.createCell(3).setCellValue(step.getName().toLowerCase());
-                        if (step.getName().toLowerCase().equals("end")) {
-                            row.createCell(4).setCellValue("end");
+                        if (step.getName().toLowerCase().equals(END_NODE)) {
+                            row.createCell(4).setCellValue(END_NODE);
                         } else {
                             row.createCell(4).setCellValue("Success");
                         }
@@ -114,7 +118,7 @@ public class ExcelCreator {
             sheet.autoSizeColumn(i);
         }
 
-        String path = "D:\\Estagio\\TestCases" + Math.random() + ".xlsx";
+        String path = FileHandling.BASE_PATH + TEST_NAME;
         try {
 
             FileOutputStream fileOutputStream = new FileOutputStream(path);

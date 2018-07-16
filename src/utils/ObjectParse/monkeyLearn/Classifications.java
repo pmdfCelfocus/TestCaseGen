@@ -1,4 +1,4 @@
-package monkeyLearn;
+package utils.ObjectParse.monkeyLearn;
 
 public class Classifications {
 

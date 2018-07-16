@@ -1,4 +1,6 @@
-package utils;
+package utils.ObjectParse;
+
+import utils.ObjectParse.Diagram;
 
 public class SingleDiagram {
 

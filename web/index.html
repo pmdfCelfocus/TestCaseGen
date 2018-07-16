@@ -22,7 +22,9 @@
         Dropzone.options.myAwesomeDropzone = {
             success: function (file, response) {
                 getContent(response);
-            }
+            },
+            //Clean for accept Excel files
+            acceptedFiles: "application/pdf"
         }
 
         function init() {

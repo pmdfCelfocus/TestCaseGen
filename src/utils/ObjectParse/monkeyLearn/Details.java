@@ -1,4 +1,6 @@
-package monkeyLearn;
+package utils.ObjectParse.monkeyLearn;
+
+import utils.ObjectParse.monkeyLearn.Classifications;
 
 public class Details {
 

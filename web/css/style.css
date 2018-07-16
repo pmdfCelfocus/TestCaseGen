@@ -102,9 +102,10 @@ h1 {
 }
 
 #buttons{
+   
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 1057px;
     height: 13%;
     display: flex;
     align-items: center;
@@ -158,7 +159,7 @@ h1 {
 }
 
 #ready{
-    animation: slide-up 1s ease, to-the-right 1s ease;
+    animation: slide-up 1s ease;
     text-align: center;
     color: whitesmoke;
     border-radius: 10px 10px 10px 10px;
@@ -250,18 +251,6 @@ h1 {
     100% {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes to-the-right{
-    
-    0% {
-        opacity: 0;
-        transform: translate(0);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(10px);
     }
 }
 

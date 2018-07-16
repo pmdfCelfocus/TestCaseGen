@@ -145,8 +145,13 @@ function showName(id, name) {
     first = true;
     insertButtons();
   }
-  let diagName = document.getElementById(id);
-  diagName.innerHTML = name;
+  let el = document.getElementById(id);
+  let parent = el.parentNode;
+  parent.removeChild(el);
+  el = document.createElement(id);
+  el.id = id;
+  parent.appendChild(el);
+  el.innerHTML = name;
 }
 
 function create(url) {
