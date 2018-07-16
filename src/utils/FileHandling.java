@@ -52,7 +52,7 @@ public class FileHandling {
         return null;
     }
 
-    private static void checkAndCreateDirectory() {
+    public static void checkAndCreateDirectory() {
         File directory = new File(BASE_PATH);
         if (!directory.exists())
             directory.mkdirs();

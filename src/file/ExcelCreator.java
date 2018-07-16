@@ -43,6 +43,7 @@ public class ExcelCreator {
     }
 
     private static String writeExcel(Object result) {
+        FileHandling.checkAndCreateDirectory();
         Workbook workbook = new XSSFWorkbook();
 
         Sheet sheet = workbook.createSheet(TEST_CONST);

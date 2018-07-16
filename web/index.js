@@ -1,3 +1,6 @@
+const POST_URL = 'http://localhost:8080/generate';
+const FILENAME = 'TestCase.xlsx';
+
 let requirements;
 let onlyScenarios = [];
 let $;
@@ -5,21 +8,20 @@ let actDiagram;
 let nodesArrays = [];
 let formData = new FormData();
 let nodeDataArray;
+let first = false;
 
 function getContent(content) {
   requirements = content;
   processNodes();
 }
 
-function addForm() {
-  if (nodeDataArray != 'undefined' && nodesArrays != 0) {
-    formData.append("diagram", JSON.stringify(nodeDataArray));
-  }
-}
-
-function next() {
-  addForm();
-  draw();
+function getGO(model) {
+  $ = model;
+  actDiagram = $(go.Diagram, "act", {
+    contentAlignment: go.Spot.Center,
+    layout: $(go.TreeLayout,
+      { angle: 90, layerSpacing: 35 })
+  });
 }
 
 function processNodes() {
@@ -109,15 +111,6 @@ function buildJSON(string, parent, key) {
   return result;
 }
 
-function getGO(model) {
-  $ = model;
-  actDiagram = $(go.Diagram, "act", {
-    contentAlignment: go.Spot.Center,
-    layout: $(go.TreeLayout,
-      { angle: 90, layerSpacing: 35 })
-  });
-}
-
 function draw() {
   if (nodesArrays.length == 0) {
     sendSelected();
@@ -138,7 +131,17 @@ function draw() {
   }
 }
 
-let first = false;
+function addForm() {
+  if (nodeDataArray != 'undefined' && nodesArrays != 0) {
+    formData.append("diagram", JSON.stringify(nodeDataArray));
+  }
+}
+
+function next() {
+  addForm();
+  draw();
+}
+
 
 function showName(id, name) {
   if(!first){
@@ -154,43 +157,17 @@ function showName(id, name) {
   el.innerHTML = name;
 }
 
-function create(url) {
-  let div = document.getElementById('download');
-  let newbutton = document.createElement('button');
-  newbutton.id = 'btn';
-  let newEl = document.createElement('a');
-  newEl.id = 'dl';
-  let text = document.createTextNode('Download Here')
-  newEl.setAttribute('href', url);
-  newEl.setAttribute('download', 'TestCase.xlsx');
-
-  newEl.appendChild(text);
-  newbutton.appendChild(newEl);
-  div.appendChild(newbutton);
-
-}
-
-function clearDiagName() {
-  let diagName = document.getElementById('diagName');
-  diagName.parentNode.removeChild(diagName);
-}
-
-function reset() {
-  actDiagram.clear();
-  clearDiagName();
-}
-
 function sendSelected() {
   addForm();
   reset();
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://localhost:8080/generate', true);
+  xhr.open('POST', POST_URL, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState != 4) {
       let response = xhr.responseText;
       console.log(response);
       if (response != '')
-        create(response);
+        createDownload(response);
       return;
     }
     if (xhr.status != 200) {
@@ -199,6 +176,54 @@ function sendSelected() {
   }
   xhr.send(formData);
 }
+
+function reset() {
+  actDiagram.clear();
+  clearDiagName();
+}
+
+function clearDiagName() {
+  let diagName = document.getElementById('diagName');
+  diagName.parentNode.removeChild(diagName);
+}
+
+function createDownload(url) {
+  let div = document.getElementById('download');
+  let newbutton = document.createElement('button');
+  newbutton.id = 'btn';
+  let newEl = document.createElement('a');
+  newEl.id = 'dl';
+  let text = document.createTextNode('Download Here')
+  newEl.setAttribute('href', url);
+  newEl.setAttribute('download', FILENAME);
+
+  newEl.appendChild(text);
+  newbutton.appendChild(newEl);
+  div.appendChild(newbutton);
+
+}
+
+function insertButtons() {
+  createButton('yes', 'Add Diagram', 'next()');
+  createButton('no', 'Reject Diagram', 'draw()');
+  showName('or','OR');
+  createButton('ready', 'Send Now', 'sendSelected()');
+}
+
+
+function createButton(id, text, funcName) {
+let buttonsDiv = document.getElementById('buttons');
+let btn = document.createElement('button');
+btn.id = id;
+btn.setAttribute('onclick', funcName);
+let node = document.createTextNode(text);
+
+btn.appendChild(node);
+buttonsDiv.appendChild(btn);
+
+}
+
+//--------------------------Classes---------------------------
 
 function Test(name, desc, steps) {
   this.name = name;
@@ -231,24 +256,4 @@ Scenario.prototype.getBase = function () {
 
 Scenario.prototype.getScenarios = function () {
   return this.scenarios;
-}
-
-function insertButtons() {
-    createButton('yes', 'Add Diagram', 'next()');
-    createButton('no', 'Reject Diagram', 'draw()');
-    showName('or','OR');
-    createButton('ready', 'Send Now', 'sendSelected()');
-}
-
-
-function createButton(id, text, funcName) {
-  let buttonsDiv = document.getElementById('buttons');
-  let btn = document.createElement('button');
-  btn.id = id;
-  btn.setAttribute('onclick', funcName);
-  let node = document.createTextNode(text);
-
-  btn.appendChild(node);
-  buttonsDiv.appendChild(btn);
-
 }

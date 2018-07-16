@@ -5,11 +5,14 @@ const busboy = require('connect-busboy');
 const fs = require('fs');
 const request = require('request');
 const app = express();
-
-const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
 
+
+const BASE_FOLDER = '/files/';
+const SEND_JSON = 'toSend.json';
+
+//For testing
 let json;
 
 app.use(function (req, res, next) {
@@ -29,7 +32,7 @@ app.get('/', function (req, res) {
 app.post('/generate', upload.array(), function (req, res) {
     req.body = JSON.stringify(req.body);
     let json = req.body;
-    let dir = __dirname + "/files/toSend.json";
+    let dir = __dirname + BASE_FOLDER + SEND_JSON;
     fs.writeFileSync(dir, json, function (err) {
         if (err)
             console.error(err);
@@ -42,11 +45,12 @@ app.post('/file-upload', function (req, res) {
     req.pipe(req.busboy);
     req.busboy.on('file', function (fieldname, file, filename) {
         console.log("Uploading: " + filename);
-        let dir = __dirname + '/files/' + filename;
+        let dir = __dirname + BASE_FOLDER + filename;
         fstream = fs.createWriteStream(dir);
         file.pipe(fstream);
         fstream.on('close', function () {
             res.set('Content-type', 'application/json');
+            //Test
             res.send(getJson());
             //res.send(uploadPost(dir,filename));
             res.status(200).end('SUCESS');
@@ -71,7 +75,6 @@ function uploadPost(dir, filename) {
             return console.error('upload failed:', err);
         }
         console.log('Upload successful! -> ' + body);
-        //json = JSON.parse(body);
         return JSON.parse(body);
     });
 
@@ -83,13 +86,14 @@ function generatePost(dir, res) {
     }
     request.post(
         {
-            url: 'http://172.18.191.105:9999/generate',
+            url: POST_URL + 'generate',
             formData: formData
         }).on('response', function(response){
             let filename;
             filename = new String(findFileName(response.headers['content-disposition']));
-            response.pipe(fs.createWriteStream(__dirname + "/files/" + filename));
-            res.send(__dirname + "/files/" + filename);
+            //Inserting the path to a variable creates a bug on Express's send 
+            response.pipe(fs.createWriteStream(__dirname + BASE_FOLDER + filename));
+            res.send(__dirname + BASE_FOLDER + filename);
         });
     }
 
