@@ -26,5 +26,5 @@ public interface Rest {
     @POST
     @Path("generate")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    Response generate(@FormDataParam("file") InputStream uploadedInputStream) throws IOException;
+    Response generate(@FormDataParam("file") InputStream uploadedInputStream);
 }

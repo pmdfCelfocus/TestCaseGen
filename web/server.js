@@ -1,6 +1,5 @@
 const POST_URL = "http://172.18.191.105:9999/";
 const express = require("express");
-const path = require("path");
 const busboy = require('connect-busboy');
 const fs = require('fs');
 const request = require('request');
@@ -21,7 +20,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(express.static(path.join(__dirname, '/public')));
 app.use(busboy());
 console.log("Server started!");
 

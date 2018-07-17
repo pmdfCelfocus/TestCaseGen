@@ -57,12 +57,18 @@ public class RestServer implements Rest {
         }
     }
 
-    public Response generate(InputStream uploadedInputStream) throws IOException {
-        String path = ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
-        File f = new File(path);
-        return Response.ok(f, MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"" + f.getName() + "\"") //optional
-                .build();
+    public Response generate(InputStream uploadedInputStream) {
+        String path = null;
+        try {
+            path = ExcelCreator.createExcel(IOUtils.toByteArray(uploadedInputStream));
+            File f = new File(path);
+            return Response.ok(f, MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\"" + f.getName() + "\"") //optional
+                    .build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void main(String[] args) {
