@@ -10,8 +10,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.util.*;
 
+/**
+ * @author Pedro Feiteira, n48119, NB24217
+ * This is class reads an excel file with two colmuns, the test case name and description
+ */
 public class ExcelReader {
 
+    /**
+     * Load the file, read it and transforms the data into a map with key test name and value description
+     * @param path to the excel file
+     * @return map with the received information
+     */
     public static  Map<String , String> parseExcel(String path) {
         try {
             FileInputStream file = new FileInputStream(new File(path));

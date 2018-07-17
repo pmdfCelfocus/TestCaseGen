@@ -1,5 +1,9 @@
 package utils.ObjectParse.monkeyLearn;
-
+/**
+ * @author Pedro Feiteira, n48119, NB24217
+ * This class is used as GSON conversion
+ * watch -> https://app.monkeylearn.com/main/classifiers/cl_4yVFrrYo/tab/run/
+ */
 public class Classifications {
 
     private String tag_name;

@@ -18,16 +18,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *@author Pedro Feiteira, n48119, NB24217
+ *
+ * This class represents the Rest Server. All the request are made by multipart/form-data and they can be received with
+ * an InputStream
+ */
 public class RestServer implements Rest {
 
     Gson gson = new Gson();
 
+    /**
+     * Writes the received pdf to a path and then it is parsed. The parsing consists in requirements extraction.
+     * This information is transformed into a map with the requirement title as key and the text saved in multiple lines
+     * as value (String list).
+     * @param uploadedInputStream, request input stream
+     * @return json file categorized by requirement types
+     */
     public String analyzePDF(InputStream uploadedInputStream) {
 
         try {
             String path = FileHandling.writeToFile(uploadedInputStream);
             Map<String, List<String>> requirements = PDFReader.parsePDF(path);
             List<String> textList = new LinkedList<>();
+            //Transformations from map to linked list
             for (String key : requirements.keySet()) {
                 StringBuilder str = new StringBuilder();
                 requirements.get(key).forEach(line -> {
@@ -46,7 +60,12 @@ public class RestServer implements Rest {
         return null;
     }
 
-
+    /**
+     * Writes the received excel to a path and then it is parsed. The parsing consists in test name and description
+     * extraction
+     * @param uploadedInputStream, request input stream
+     * @return json file
+     */
     public String analyzeExcel(InputStream uploadedInputStream) {
         try {
             String path = FileHandling.writeToFile(uploadedInputStream);
@@ -57,6 +76,12 @@ public class RestServer implements Rest {
         }
     }
 
+
+    /**
+     * Receives a form data with a json. An Excel worksheet will be created with json information
+     * @param uploadedInputStream, request input stream
+     * @return the created excel file
+     */
     public Response generate(InputStream uploadedInputStream) {
         String path = null;
         try {
