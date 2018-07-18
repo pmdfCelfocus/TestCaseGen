@@ -34,7 +34,8 @@ This server has dependencies too. They are:
 ## Workflow
 ![image4](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/4.jpg?raw=true)
 
-Test Case Generator complete steps are:
+### Test Case Generator complete steps are:
+
 **1.**	The user opens the web page
 
 **2.**	Drops his SRS Document in drag and drop element
