@@ -8,6 +8,7 @@ Test Case Generator is a web application that a user inserts an IEEE format SRS 
 This shows that the user has a SRS Document that he needs to extract the requirements from it, so when he drops the pdf file in the application and by following all the necessary steps, an Excel file with test cases will be generated. The next diagram will show, how the Test Case Generator component works in more detail:
 
 ![image2](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/2.jpg?raw=true)
+
 The Test Case Generator component from above diagram has three components:
 -	Web Browser: Uses a HTML with the UI and a Javascript to manage the HTML’s buttons functionalities. This sub component uses two libraries: DropZone.js, used to create the drag and drop element on the web page. This library allows sending the dropped file to a specific URL or just to an automatic link, if the html file belongs to a Node.js server. The usage is very simple, which means that is very simple to configure and it comes with a good drag and drop CSS layout.
 GOJS, used to create scenario’s flowcharts and make them more easily to understand by the user. It was chosen because it’s very customizable and works in a Web Browser (does not need Node.js to work and, because of that, it is possible to create dynamic flowcharts).
@@ -19,6 +20,7 @@ Multer, it is a “multipart/form-data” parser. Used to interpret the FormData
 Request, used to create HTTP requests to JAVA server. A request’s content type is a “multipart/form-data” because was the only way found to send files via HTTP. Send it as a byte array, provokes in the other endpoint a file corruption. This error was caused by the sent file’s encoding. The only way found was send literally this file and do not convert it into a byte array. A form data is like a box that we can attach multiple data with multiple content type. The “box” was created and has the file that is going to be send inside. The other endpoint receives the file and the correct file’s content type too.
 -	Java Server: Inside this component there is another two sub components to consider:
 ![image3](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/3.jpg?raw=true)
+
 Rest Server, it is a simple server that uses REST to handle HTTP request. This server extracts the requirements from the SRS file, extracts test names and descriptions from an Excel file (not used yes, will be explained below) and writes the final Excel Test Case file. 
 This server has dependencies too. They are:
 -	iTextPDF, used for ready and extract the requirements page by page.
@@ -29,6 +31,7 @@ This server has dependencies too. They are:
 Natural Language Processing, for this component it is used Monkey Learn. Monkey Learn it is a Natural Language Classifier API that is used to classify certain texts. In this case, it is used in requirements classification. This API was chosen because it is the only one found that is possible create a custom classification model for free. It is accessed via HTTP and receives a JSON for request and responses a JSON file format too.
 ## Workflow
 ![image4](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/4.jpg?raw=true)
+
 Test Case Generator complete steps are:
 1.	The user opens the web page
 2.	Drops his SRS Document in drag and drop element
@@ -58,6 +61,7 @@ This project for now, has a minimalist base. The idea was always try to “touch
 -	Use algorithms (in annex) to transform the diagrams (activity and sequence) into graphs and use Depth-First Search Algorithm to generate the Test Case
 ## API references
 ### JavaScript
+* [Node.js](https://nodejs.org/docs/latest-v9.x/api/)
 * [Express JS](https://expressjs.com)
 * [Connect-Busboy](https://www.npmjs.com/package/connect-busboy)
 * [File-System](https://www.npmjs.com/package/file-system)
@@ -81,7 +85,7 @@ This project for now, has a minimalist base. The idea was always try to “touch
 *	https://www.conformiq.com/wp-content/uploads/2015/02/Conformiq-Creator-2-Self-Study-Material-1.pdf
 *	https://www.conformiq.com/wp-content/uploads/2017/10/Conformiq-AI-White-Paper.pdf
 
-### Used Icons
+### Project's Icons
 File by Galaxicon from the Noun Project
 
 Brain by Wes Breazell from the Noun Project
