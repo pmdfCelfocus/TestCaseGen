@@ -19,6 +19,9 @@
 <body onload="init()">
 
     <script>
+        /*
+            Dropzone custom configuration configuration
+        */
         Dropzone.options.myAwesomeDropzone = {
             success: function (file, response) {
                 getContent(response);
@@ -26,7 +29,8 @@
             //Clean for accept Excel files
             acceptedFiles: "application/pdf"
         }
-
+        
+        //Send the GOJS graph object into the javascript file 
         function init() {
             getGO(go.GraphObject.make);
         }
