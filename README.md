@@ -101,11 +101,11 @@ This project for now, has a minimalist base. The idea was always try to “touch
 
 ## References
 ### Web Documents
-*	https://www.researchgate.net/publication/236148469_Test_Case_Generation_Using_Activity_Diagram_and_Sequence_Diagram
-*	https://www.sciencedirect.com/science/article/pii/S1877050917320732
-*	http://mbdl.arizona.edu/publications/pdfs/Cunning2004zr.pdf
-*	https://www.conformiq.com/wp-content/uploads/2015/02/Conformiq-Creator-2-Self-Study-Material-1.pdf
-*	https://www.conformiq.com/wp-content/uploads/2017/10/Conformiq-AI-White-Paper.pdf
+* [Test Case Generation Using Activity Diagram and Sequence Diagram](https://www.researchgate.net/publication/236148469_Test_Case_Generation_Using_Activity_Diagram_and_Sequence_Diagram)
+* [Automated Test Case Generation from UML Activity Diagram and Sequence Diagram using Depth First Search Algorithm](https://www.sciencedirect.com/science/article/pii/S1877050917320732)
+* [Automatic Test Case Generation from Requirements Specifications for Real-time Embedded System](http://mbdl.arizona.edu/publications/pdfs/Cunning2004zr.pdf)
+* [Getting Started with Conformiq Creator](https://www.conformiq.com/wp-content/uploads/2015/02/Conformiq-Creator-2-Self-Study-Material-1.pdf)
+* [USE OF ARTIFICIAL INTELLIGENCE IN AUTOMATED TEST DESIGN](https://www.conformiq.com/wp-content/uploads/2017/10/Conformiq-AI-White-Paper.pdf)
 
 ### Project's Icons
    File by Galaxicon from the Noun Project
