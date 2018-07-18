@@ -22,7 +22,10 @@ public class PDFReader {
     private static Map<String, List<String>> requirements = new TreeMap<>();
     private static final String TABLE_CONST = "Table of Contents";
     private static final String APPENDIX = "appendix";
-    private static final String REQ = "requirements";
+    private static final String REQ = "requirement";
+    private static final String REQS = "requirements";
+    private static final String STORY = "story";
+    private static final String STORIES = "stories";
     private static final String INTRO = "introduction";
 
     /**
@@ -112,6 +115,24 @@ public class PDFReader {
         Matcher m = p.matcher(s);
 
         return m.find();
+    }
+
+    /**
+     * Check if a string has requirement(s) word
+     * @param s, string that will be checked
+     * @return true id s has requirement(s) word, otherwise returns false
+     */
+    private static boolean checkReq(String s){
+        return (s.contains(REQ) || s.contains(REQS));
+    }
+
+    /**
+     * Check if a string has stor(y)(ies) word
+     * @param s, string that will be checked
+     * @return true id s has stor(y)(ies) word, otherwise returns false
+     */
+    private static boolean checkStory(String s){
+        return (s.contains(STORY) || s.contains(STORIES));
     }
 
     /**
@@ -215,7 +236,7 @@ public class PDFReader {
                             break;
                         }
                         //Get the requirement part in the document
-                        if (index.toLowerCase().contains(REQ) && !close) {
+                        if ((checkReq(index.toLowerCase()) || checkStory(index.toLowerCase())) && !close) {
                             requirementsPage = getPageNumber(index);
                             close = true;
                         } else if (stringContainsNumber(index)) {
