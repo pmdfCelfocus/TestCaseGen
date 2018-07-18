@@ -2,7 +2,7 @@
 ## What is it?
 Test Case Generator is a web application that a user inserts an IEEE format SRS (Software Requirements Specification) document and get an Excel worksheet with all the chosen requirements in Test Case format.
 
-##Arquitecture
+## Arquitecture
 ![image1](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/1.jpg?raw=true)
 
 This shows that the user has a SRS Document that he needs to extract the requirements from it, so when he drops the pdf file in the application and by following all the necessary steps, an Excel file with test cases will be generated. The next diagram will show, how the Test Case Generator component works in more detail:
@@ -27,7 +27,7 @@ This server has dependencies too. They are:
 -	COMMON-IO, used to simply load data into byte arrays
 -	Jersey, the API that allows the REST server creation. Was tried to use Jersey’s Form Data Handlers but unsuccessfully (unknown bug). Then was used a simple InputStream and Jersey’s FormDataParam annotation. The request handling was done manually.
 Natural Language Processing, for this component it is used Monkey Learn. Monkey Learn it is a Natural Language Classifier API that is used to classify certain texts. In this case, it is used in requirements classification. This API was chosen because it is the only one found that is possible create a custom classification model for free. It is accessed via HTTP and receives a JSON for request and responses a JSON file format too.
-##Workflow
+## Workflow
 ![image4](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/4.jpg?raw=true)
 Test Case Generator complete steps are:
 1.	The user opens the web page
@@ -48,16 +48,16 @@ Test Case Generator complete steps are:
 16.	This file is sent as Response from the REST Server
 17.	The JS Server receives the file and it is automatically written into JS Server’s files folder. The path to this is sent to the Web Browser as response to the FormData sent it previously with the diagrams information
 18.	When the path arrives to the Web JavaScript, it is created a new DOM download button in html. When it is pressed, the file is downloaded
-##Documentation:
+## Documentation:
 All the developed code is commented, so for a good explanation about all the implemented functions, read the code’s comments.
-##What is missing?
+## What is missing?
 This project for now, has a minimalist base. The idea was always try to “touch” all the important points and never hard develop only one point. So, there is some few things that is missing from the original idea. Some of them are:  
 -	The requirements used are only those that have scenarios so, is should be possible in the future create a diagram from every requirement and not only from those that has.
 -	Improve the current flowcharts, by sophisticate them (with decision nodes, for example)
 -	Create, as well, sequence diagrams. They are needed to create a better Test Case scenario. 
 -	Use algorithms (in annex) to transform the diagrams (activity and sequence) into graphs and use Depth-First Search Algorithm to generate the Test Case
-##API references
-###JavaScript
+## API references
+### JavaScript
 * [Express JS](https://expressjs.com)
 * [Connect-Busboy](https://www.npmjs.com/package/connect-busboy)
 * [File-System](https://www.npmjs.com/package/file-system)
@@ -66,7 +66,7 @@ This project for now, has a minimalist base. The idea was always try to “touch
 * [Dropzone.js](http://www.dropzonejs.com/#usage)
 * [GOJS](https://gojs.net/latest/learn/index.html)
 
-###Java
+### Java
 *	[iTextPDF](https://itextsupport.com/apidocs/itext7/latest/)
 *	[Apache-POI](https://poi.apache.org/apidocs/index.html)
 *	[GSON](https://github.com/google/gson/blob/master/UserGuide.md)
@@ -74,14 +74,14 @@ This project for now, has a minimalist base. The idea was always try to “touch
 *	[Jersey (Rest)](https://jersey.github.io/documentation/latest/index.html)
 *	[MonkeyLearn](https://monkeylearn.com/api/v3/#java)
 
-##References
+## References
 *	https://www.researchgate.net/publication/236148469_Test_Case_Generation_Using_Activity_Diagram_and_Sequence_Diagram
 *	https://www.sciencedirect.com/science/article/pii/S1877050917320732
 *	http://mbdl.arizona.edu/publications/pdfs/Cunning2004zr.pdf
 *	https://www.conformiq.com/wp-content/uploads/2015/02/Conformiq-Creator-2-Self-Study-Material-1.pdf
 *	https://www.conformiq.com/wp-content/uploads/2017/10/Conformiq-AI-White-Paper.pdf
 
-###Used Icons
+### Used Icons
 File by Galaxicon from the Noun Project
 
 Brain by Wes Breazell from the Noun Project
