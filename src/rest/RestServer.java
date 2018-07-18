@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *@author Pedro Feiteira, n48119, NB24217
+ *@author Pedro Feiteira, n48119
  *
  * This class represents the Rest Server. All the request are made by multipart/form-data and they can be received with
  * an InputStream

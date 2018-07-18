@@ -3,7 +3,7 @@ package utils;
 import java.io.*;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  * Class used to execute file operations
  */
 public class FileHandling {

@@ -1,7 +1,7 @@
 package utils.ObjectParse;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  * This class is used as GSON conversion
  * watch -> https://gojs.net/latest/samples/flowchart.html (json format)
  */

@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  * This class is used to process the dropped pdf file and extract the requirements from it
  */
 public class PDFReader {

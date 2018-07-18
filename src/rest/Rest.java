@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  *
  * Rest server interface
  *

@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  * This is class reads an excel file with two colmuns, the test case name and description
  */
 public class ExcelReader {

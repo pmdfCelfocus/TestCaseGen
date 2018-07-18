@@ -12,7 +12,7 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  * This class is used to create the Monkey Learn request. The response comes in JSON.
  */
 public class MonkeyLearnRequest {

@@ -3,7 +3,7 @@ package utils.ObjectParse.monkeyLearn;
 import utils.ObjectParse.monkeyLearn.Classifications;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  * This class is used as GSON conversion
  * watch -> https://app.monkeylearn.com/main/classifiers/cl_4yVFrrYo/tab/run/
  */

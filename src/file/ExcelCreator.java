@@ -13,7 +13,7 @@ import utils.ObjectParse.Steps;
 import java.io.FileOutputStream;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  *
  * This class is used to create an Excel File with the information receives from the diagrams JSON
  * The formdata file is written in the local folder and then loaded as a byte array

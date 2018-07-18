@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Pedro Feiteira, n48119, NB24217
+ * @author Pedro Feiteira, n48119
  * This class receives the requirements and send it to the monkey learn server to be classified.
  * The monkey learn response is transformed into a well understand json. This json is sent it as a response
  */
