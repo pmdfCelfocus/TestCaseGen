@@ -109,5 +109,8 @@ This project for now, has a minimalist base. The idea was always try to “touch
 
 ### Project's Icons
    File by Galaxicon from the Noun Project
+
    Brain by Wes Breazell from the Noun Project
+
    Penguin by Javier Cabezas from the Noun Project
+   
