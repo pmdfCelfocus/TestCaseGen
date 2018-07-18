@@ -36,23 +36,41 @@ This server has dependencies too. They are:
 
 Test Case Generator complete steps are:
 **1.**	The user opens the web page
+
 **2.**	Drops his SRS Document in drag and drop element
-**3.**	The drag and drop, with the Dropzone.js, send the file automatically to the JS Server
+
+**3.**	The drag and drop, with the Dropzone.js, send the file automatically to the JS 
+Server
 **4.**	In JS Server, by using file-system package, the file is written in server’s files folder
+
 **5.**	It is created a read file stream to get the file information and it is attached into a form data. This form data is sent to the Java Rest Server.
+
 **6.**	The Rest Server reads the file and extracts the data form it.
+
 **7.**	A JSON is created with all the found requirements and sent to the MonkeyLearn server to be classified by requirement type
+
 **8.**	MonkeyLearn’s response comes in JSON format and it is sent to Rest Server
+
 **9.**	Rest Server transforms the MonkeyLearn’s JSON into a customized JSON file
+
 **10.**	This new customized JSON is sent as a response to JS Server and then passed through the web JavaScript
+
 **11.**	The web JavaScript process this JSON and transforms each requirement found (only requirements with scenarios for now) into a flowchart. All diagrams are pushed into an array and the first one is popped out from this array and drawn to the diagram canvas
+
 **12.**	By pressing the select buttons, the diagrams chosen are inserted into another FormData. When there are no more diagrams do show this FormData is sent to the JS Server
+
 **13.**	On JS Server, using multer, the FormData is parsed and send it directly to REST Server
+
 **14.**	On REST server, the FormData is transformed into Diagram Objects and inserted into an Excel File
+
 **15.**	After the Excel File’s data insertion, it is written into a file
+
 **16.**	This file is sent as Response from the REST Server
+
 **17.**	The JS Server receives the file and it is automatically written into JS Server’s files folder. The path to this is sent to the Web Browser as response to the FormData sent it previously with the diagrams information
+
 **18.**	When the path arrives to the Web JavaScript, it is created a new DOM download button in html. When it is pressed, the file is downloaded
+
 ## Documentation:
 All the developed code is commented, so for a good explanation about all the implemented functions, read the code’s comments.
 ## What is missing?
