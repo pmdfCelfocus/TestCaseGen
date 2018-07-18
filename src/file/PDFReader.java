@@ -24,6 +24,7 @@ public class PDFReader {
     private static final String APPENDIX = "appendix";
     private static final String REQ = "requirement";
     private static final String REQS = "requirements";
+    //Agile requirements are stories
     private static final String STORY = "story";
     private static final String STORIES = "stories";
     private static final String INTRO = "introduction";
