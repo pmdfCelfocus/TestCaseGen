@@ -4,7 +4,7 @@ const POST_URL = 'http://localhost:8080/generate';
 const FILENAME = 'TestCase.xlsx';
 
 //Used to save the Dropzone success response
-let requirements;
+let requirements = {};
 //Used to save all the requirements with scenarios
 let onlyScenarios = [];
 //GOJS variable
@@ -29,7 +29,8 @@ let postHandler = true;
  * @param {JSON} content 
  */
 function getContent(content) {
-  requirements = content;
+  requirements = JSON.parse(content);
+  console.log(requirements);
   processNodes();
 }
 

@@ -8,7 +8,6 @@ const request = require('request');
 const app = express();
 const multer = require('multer');
 const upload = multer();
-
 //Server local folder
 const BASE_FOLDER = '/files/';
 //Diagram JSON name
@@ -55,6 +54,7 @@ app.post('/generate', upload.array(), function (req, res) {
 app.post('/file-upload', function (req, res) {
     let fstream;
     //Busboy used to parse a received file
+    
     req.pipe(req.busboy);
     req.busboy.on('file', function (fieldname, file, filename) {
         console.log("Uploading: " + filename);
@@ -65,10 +65,9 @@ app.post('/file-upload', function (req, res) {
         //When the write is finished
         fstream.on('close', function () {
             //Test
-            res.set('Content-type', 'application/json');
-            res.send(getJson());
-            //uploadPost(dir,filename);
-            res.status(200).end('SUCESS');
+            //res.set('Content-type', 'application/json');
+            //res.send(getJson());
+            uploadPost(dir,filename,res);
         });
     }
     );
@@ -99,10 +98,13 @@ function uploadPost(dir, filename, res) {
         if (err) {
             return console.error('upload failed:', err);
         }
-        console.log('Upload successful! -> ' + body);
+        //console.log('Upload successful! -> ' + body);
         //Send a JSON as response
-        res.send(JSON.parse(body));
-    });
+        let response = String (JSON.parse(JSON.stringify(body)));
+        //console.log(response);
+        res.send(response);
+    }
+);
 
 }
 

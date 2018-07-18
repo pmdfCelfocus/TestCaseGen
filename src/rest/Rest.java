@@ -21,13 +21,13 @@ public interface Rest {
     @Path("pdf/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    String analyzePDF(@FormDataParam("file") InputStream uploadedInputStream);
+    Response analyzePDF(@FormDataParam("file") InputStream uploadedInputStream);
 
     @POST
     @Path("xlsx/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    String analyzeExcel(@FormDataParam("file") InputStream uploadedInputStream);
+    Response analyzeExcel(@FormDataParam("file") InputStream uploadedInputStream);
 
     @POST
     @Path("generate")
