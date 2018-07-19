@@ -23,14 +23,14 @@ For a simple server it works fine, but when is it needed to send files, other pa
 -	**Java Server**: Inside this component there is another two sub components to consider:
 ![image3](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/docs/documentation/images/3.jpg?raw=true)
 
-- **Rest Server**, it is a simple server that uses REST to handle HTTP request. This server extracts the requirements from the SRS file, extracts test names and descriptions from an Excel file (not used yes, will be explained below) and writes the final Excel Test Case file. 
-This server has dependencies too. They are:
-    -	**iTextPDF**, used for ready and extract the requirements page by page.
-    -	**Apache POI**, used to read and write Microsoft type documents (in this case only Excel type was used)
-    -	**GSON**, the Google’s JSON to Object and vice-versa converter
-    -	**COMMON-IO**, used to simply load data into byte arrays
-    -	**Jersey**, the API that allows the REST server creation. Was tried to use Jersey’s Form Data Handlers but unsuccessfully (unknown bug). Then was used a simple InputStream and Jersey’s FormDataParam annotation. The request handling was done manually.
-- **Natural Language Processing**, for this component it is used **Monkey Learn**. Monkey Learn it is a Natural Language Classifier API that is used to classify certain texts. In this case, it is used in requirements classification. This API was chosen because it is the only one found that is possible create a custom classification model for free. It is accessed via HTTP and receives a JSON for request and responses a JSON file format too.
+    - **Rest Server**, it is a simple server that uses REST to handle HTTP request. This server extracts the requirements from the SRS file, extracts test names and descriptions from an Excel file (not used yes, will be explained below) and writes the final Excel Test Case file. 
+    This server has dependencies too. They are:
+        -	**iTextPDF**, used for ready and extract the requirements page by page.
+        -	**Apache POI**, used to read and write Microsoft type documents (in this case only Excel type was used)
+        -	**GSON**, the Google’s JSON to Object and vice-versa converter
+        -	**COMMON-IO**, used to simply load data into byte arrays
+        -	**Jersey**, the API that allows the REST server creation. Was tried to use Jersey’s Form Data Handlers but unsuccessfully (unknown bug). Then was used a simple InputStream and Jersey’s FormDataParam annotation. The request handling was done manually.
+    - **Natural Language Processing**, for this component it is used **Monkey Learn**. Monkey Learn it is a Natural Language Classifier API that is used to classify certain texts. In this case, it is used in requirements classification. This API was chosen because it is the only one found that is possible create a custom classification model for free. It is accessed via HTTP and receives a JSON for request and responses a JSON file format too.
 ## Workflow
 ![image4](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/docs/documentation/images/4.jpg?raw=true)
 
