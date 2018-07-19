@@ -79,9 +79,9 @@ This project for now, has a minimalist base. The idea was always try to “touch
 - The requirements used are only those that have scenarios so, is should be possible in the future create a diagram from every requirement and not only from those that has.
 -	Improve the current flowcharts, by sophisticate them (with decision nodes, for example)
 -	Create, as well, sequence diagrams. They are needed to create a better Test Case scenario. 
--	Use algorithms (in annex) to transform the diagrams (activity and sequence) into graphs and use Depth-First Search Algorithm to generate the Test Case
-## API references
-### JavaScript
+-	Use algorithms (in annex) to transform the diagrams (activity and sequence) into graphs and use Depth-First Search Algorithm to generate the Test Cases
+## References
+### JavaScript Packages
 * [Node.js](https://nodejs.org/docs/latest-v9.x/api/)
 * [Express JS](https://expressjs.com)
 * [Connect-Busboy](https://www.npmjs.com/package/connect-busboy)
@@ -91,15 +91,13 @@ This project for now, has a minimalist base. The idea was always try to “touch
 * [Dropzone.js](http://www.dropzonejs.com/#usage)
 * [GOJS](https://gojs.net/latest/learn/index.html)
 
-### Java
+### Java Dependencies
 *	[iTextPDF](https://itextsupport.com/apidocs/itext7/latest/)
 *	[Apache-POI](https://poi.apache.org/apidocs/index.html)
 *	[GSON](https://github.com/google/gson/blob/master/UserGuide.md)
 *	[Apache Commons-IO](https://commons.apache.org/proper/commons-io/javadocs/api-2.5/index.html)
 *	[Jersey (Rest)](https://jersey.github.io/documentation/latest/index.html)
 *	[MonkeyLearn](https://monkeylearn.com/api/v3/#java)
-
-## References
 ### Web Documents
 * [Test Case Generation Using Activity Diagram and Sequence Diagram](https://www.researchgate.net/publication/236148469_Test_Case_Generation_Using_Activity_Diagram_and_Sequence_Diagram)
 * [Automated Test Case Generation from UML Activity Diagram and Sequence Diagram using Depth First Search Algorithm](https://www.sciencedirect.com/science/article/pii/S1877050917320732)
