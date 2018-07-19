@@ -3,11 +3,11 @@
 **Test Case Generator** is a web application that a user inserts an IEEE format SRS (Software Requirements Specification) document and get an Excel worksheet with all the chosen requirements in Test Case format.
 
 ## Arquitecture
-![image1](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/1.jpg?raw=true)
+![image1](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/docs/documentation/images/1.jpg?raw=true)
 
 This shows that the user has a SRS Document that he needs to extract the requirements from it, so when he drops the pdf file in the application and by following all the necessary steps, an Excel file with test cases will be generated. The next diagram will show, how the Test Case Generator component works in more detail:
 
-![image2](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/2.jpg?raw=true)
+![image2](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/docs/documentation/images/2.jpg?raw=true)
 
 The Test Case Generator component from above diagram has three components:
 -	**Web Browser**: Uses a HTML with the UI and a Javascript to manage the HTML’s buttons functionalities. This sub component uses two libraries: 
@@ -21,7 +21,7 @@ For a simple server it works fine, but when is it needed to send files, other pa
     - **Multer**, it is a “multipart/form-data” parser. Used to interpret the FormData send it from the Web Browser with the selected Diagrams.
     - **Request**, used to create HTTP requests to JAVA server. A request’s content type is a “multipart/form-data” because was the only way found to send files via HTTP. Send it as a byte array, provokes in the other endpoint a file corruption. This error was caused by the sent file’s encoding. The only way found was send literally this file and do not convert it into a byte array. A form data is like a box that we can attach multiple data with multiple content type. The “box” was created and has the file that is going to be send inside. The other endpoint receives the file and the correct file’s content type too.
 -	**Java Server**: Inside this component there is another two sub components to consider:
-![image3](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/3.jpg?raw=true)
+![image3](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/docs/documentation/images/3.jpg?raw=true)
 
 - **Rest Server**, it is a simple server that uses REST to handle HTTP request. This server extracts the requirements from the SRS file, extracts test names and descriptions from an Excel file (not used yes, will be explained below) and writes the final Excel Test Case file. 
 This server has dependencies too. They are:
@@ -32,7 +32,7 @@ This server has dependencies too. They are:
     -	**Jersey**, the API that allows the REST server creation. Was tried to use Jersey’s Form Data Handlers but unsuccessfully (unknown bug). Then was used a simple InputStream and Jersey’s FormDataParam annotation. The request handling was done manually.
 - **Natural Language Processing**, for this component it is used **Monkey Learn**. Monkey Learn it is a Natural Language Classifier API that is used to classify certain texts. In this case, it is used in requirements classification. This API was chosen because it is the only one found that is possible create a custom classification model for free. It is accessed via HTTP and receives a JSON for request and responses a JSON file format too.
 ## Workflow
-![image4](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/documentation/images/4.jpg?raw=true)
+![image4](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/docs/documentation/images/4.jpg?raw=true)
 
 ### Test Case Generator complete steps are:
 
