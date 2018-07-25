@@ -1,11 +1,10 @@
-package utils.ObjectParse.monkeyLearn;
+package utils.ObjectParse.requirement;
 
 import java.util.*;
 
 /**
  * @author Pedro Feiteira, n48119
  * This class is used as GSON conversion
- * watch -> https://app.monkeylearn.com/main/classifiers/cl_4yVFrrYo/tab/run/
  */
 public class DESC {
     private String base;

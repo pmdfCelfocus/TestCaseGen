@@ -1,10 +1,10 @@
-package monkeyLearn;
+package uClassify;
 
-import com.google.gson.Gson;
-import utils.ObjectParse.monkeyLearn.Classifications;
-import utils.ObjectParse.monkeyLearn.DESC;
-import utils.ObjectParse.monkeyLearn.Details;
-import utils.ObjectParse.monkeyLearn.Requirement;
+import uClassify.Objects.Classification;
+import uClassify.Objects.ClassifyObject;
+import uClassify.Objects.ResultObject;
+import utils.ObjectParse.requirement.DESC;
+import utils.ObjectParse.requirement.Requirement;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -12,12 +12,12 @@ import java.util.regex.Pattern;
 
 /**
  * @author Pedro Feiteira, n48119
- * This class receives the requirements and send it to the monkey learn server to be classified.
- * The monkey learn response is transformed into a well understand json. This json is sent it as a response
+ * This class receives the requirements and send it to the uClassify server to be classified.
+ * The uClassify response is transformed into a well understand json. This json is sent it as a response
  */
-public class ClassificationRequest {
+public class RequestParser {
+
     private static final String SCENARIO = "scenario";
-    private static Gson gson = new Gson();
 
     /**
      * Sends the text to be classified to the monkey learn server, receives the service response and returns
@@ -26,30 +26,27 @@ public class ClassificationRequest {
      * @return a map with the category as key and the list of requirements that belongs to this category as value
      */
     public static Map<String, List<Requirement>> response(String[] textList) {
-        String json = MonkeyLearnRequest.createRequest(textList);
+        List<ResultObject> toParse = APIRequest.createRequest(textList);
         //JSON to object GSON transformation
-        Details[] classifications = gson.fromJson(json, Details[].class);
-        Map<String, List<Requirement>> result = process(classifications);
+        Map<String, List<Requirement>> result = process(toParse);
         return result;
     }
 
     /**
      * Process the objects and creates a better understandable structure
-     * @param details, Monkey learn data as Array object
+     * @param toParse, uClassify data as an object list
      * @return a map with the category as key and the list of requirements that belongs to this category as value
      */
-    private static Map<String, List<Requirement>> process(Details[] details) {
+    private static Map<String, List<Requirement>> process(List<ResultObject> toParse) {
         Map<String, List<Requirement>> result = new TreeMap<>();
-        for (Details d : details) {
-            for (Classifications c : d.getClassifications()) {
-                String key = c.getTag_name();
-                if (!result.containsKey(key)) {
-                    List<Requirement> list = new LinkedList<>();
-                    list.add(createScenario(d.getText()));
-                    result.put(key, list);
-                } else {
-                    result.get(key).add(createScenario(d.getText()));
-                }
+        for (ResultObject r : toParse) {
+            String key = getHigher(r.getResponse());
+            if (!result.containsKey(key)) {
+                List<Requirement> list = new LinkedList<>();
+                list.add(createScenario(r.getText()));
+                result.put(key, list);
+            } else {
+                result.get(key).add(createScenario(r.getText()));
             }
         }
         return result;
@@ -114,5 +111,20 @@ public class ClassificationRequest {
 
         return m.find();
     }
-}
 
+    /**
+     * Get the higher response confidence name
+     * @param classify, Classification object
+     * @return most confident category
+     */
+    private static String getHigher(ClassifyObject classify){
+        Classification result = classify.getClassification()[0];
+        for(Classification c: classify.getClassification()){
+            if(result.getP() < c.getP()){
+                result = c;
+            }
+        }
+        return result.getClassName();
+    }
+
+}
