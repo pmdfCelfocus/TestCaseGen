@@ -64,9 +64,6 @@ app.post('/file-upload', function (req, res) {
         file.pipe(fstream);
         //When the write is finished
         fstream.on('close', function () {
-            //Test
-            //res.set('Content-type', 'application/json');
-            //res.send(getJson());
             uploadPost(dir,filename,res);
         });
     }
@@ -165,14 +162,6 @@ function findExtension(filename) {
             result--;
         }
     }
-}
-
-//------------------------------FOR TESTS---------------------------------------------
-
-
-function getJson() {
-    json = JSON.parse(fs.readFileSync(__dirname + "/test.json", 'utf8'));
-    return json;
 }
 
 

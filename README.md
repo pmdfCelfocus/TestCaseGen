@@ -30,7 +30,7 @@ For a simple server it works fine, but when is it needed to send files, other pa
         -	**GSON**, the Google’s JSON to Object and vice-versa converter
         -	**COMMON-IO**, used to simply load data into byte arrays
         -	**Jersey**, the API that allows the REST server creation. Was tried to use Jersey’s Form Data Handlers but unsuccessfully (unknown bug). Then was used a simple InputStream and Jersey’s FormDataParam annotation. The request handling was done manually.
-    - **Natural Language Processing**, for this component it is used **Monkey Learn**. Monkey Learn it is a Natural Language Classifier API that is used to classify certain texts. In this case, it is used in requirements classification. This API was chosen because it is the only one found that is possible create a custom classification model for free. It is accessed via HTTP and receives a JSON for request and responses a JSON file format too.
+    - **Natural Language Processing**, for this component it is used **uClassify**. uClassify it is a Natural Language Classifier API that is used to classify certain texts. In this case, it is used in requirements classification. This API was chosen because it is the only one found that is possible create a custom classification model for free. It is accessed via HTTP and receives a JSON for request and responses a JSON file format too.
 ## Workflow
 ![image4](https://github.com/pmdfCelfocus/TestCaseGen/blob/master/docs/documentation/images/4.jpg?raw=true)
 
@@ -48,11 +48,11 @@ Server
 
 **6.**	The Rest Server reads the file and extracts the data form it.
 
-**7.**	A JSON is created with all the found requirements and sent to the MonkeyLearn server to be classified by requirement type
+**7.**	A JSON is created with all the found requirements and sent to the uClassify server to be classified by requirement type
 
-**8.**	MonkeyLearn’s response comes in JSON format and it is sent to Rest Server
+**8.**	uClassify’s response comes in JSON format and it is sent to Rest Server
 
-**9.**	Rest Server transforms the MonkeyLearn’s JSON into a customized JSON file
+**9.**	Rest Server transforms the uClassify’s JSON into a customized JSON file
 
 **10.**	This new customized JSON is sent as a response to JS Server and then passed through the web JavaScript
 
@@ -97,7 +97,7 @@ This project for now, has a minimalist base. The idea was always try to “touch
 *	[GSON](https://github.com/google/gson/blob/master/UserGuide.md)
 *	[Apache Commons-IO](https://commons.apache.org/proper/commons-io/javadocs/api-2.5/index.html)
 *	[Jersey (Rest)](https://jersey.github.io/documentation/latest/index.html)
-*	[MonkeyLearn](https://monkeylearn.com/api/v3/#java)
+*	[uClassify](https://uclassify.com/docs/restapi)
 ### Web Documents
 * [Test Case Generation Using Activity Diagram and Sequence Diagram](https://www.researchgate.net/publication/236148469_Test_Case_Generation_Using_Activity_Diagram_and_Sequence_Diagram)
 * [Automated Test Case Generation from UML Activity Diagram and Sequence Diagram using Depth First Search Algorithm](https://www.sciencedirect.com/science/article/pii/S1877050917320732)
