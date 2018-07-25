@@ -2,12 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import file.ExcelCreator;
-import file.ExcelReader;
 import file.PDFReader;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import uClassify.APIRequest;
 import uClassify.RequestParser;
 import utils.FileHandling;
 import utils.IP;
@@ -61,23 +59,6 @@ public class RestServer implements Rest {
         }
 
         return null;
-    }
-
-    /**
-     * Writes the received excel to a path and then it is parsed. The parsing consists in test name and description
-     * extraction
-     *
-     * @param uploadedInputStream, request input stream
-     * @return json file
-     */
-    public Response analyzeExcel(InputStream uploadedInputStream) {
-        try {
-            String path = FileHandling.writeToFile(uploadedInputStream);
-            return Response.ok(gson.toJson(ExcelReader.parseExcel(path)), MediaType.APPLICATION_JSON).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
 

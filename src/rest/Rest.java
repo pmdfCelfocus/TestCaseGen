@@ -22,11 +22,6 @@ public interface Rest {
     Response analyzePDF(@FormDataParam("file") InputStream uploadedInputStream);
 
     @POST
-    @Path("xlsx/upload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    Response analyzeExcel(@FormDataParam("file") InputStream uploadedInputStream);
-
-    @POST
     @Path("generate")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     Response generate(@FormDataParam("file") InputStream uploadedInputStream);
