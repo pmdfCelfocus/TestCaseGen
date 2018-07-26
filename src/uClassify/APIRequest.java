@@ -45,7 +45,6 @@ public class APIRequest {
         httpPost.setHeader("Authorization", "Token " + API_KEY);
         try {
             String text = singleKeyValueToJson(textList);
-            System.out.println(text);
             StringEntity stringEntity = new StringEntity(text, "UTF8");
             stringEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
             httpPost.setEntity(stringEntity);

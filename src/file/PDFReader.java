@@ -58,16 +58,6 @@ public class PDFReader {
             e.printStackTrace();
         }
 
-        //Debug code
-        System.out.println("Extracted text:");
-        for (String k : requirements.keySet()) {
-            System.out.println("My title: " + k + "\n");
-            requirements.get(k).forEach(value -> {
-                System.out.println(value);
-            });
-            System.out.println();
-        }
-
         return requirements;
     }
 
